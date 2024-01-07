@@ -1,4 +1,7 @@
-// class AssetsPath {
-//   static const String _imagePath = "assets/";
-//   static const String loginImage = '${_imagePath}loginScreen.jpg';
-// }
+class AssetsPath {
+  static const String _imagePath = "assets/logo/";
+  static const String portraitlogo = '${_imagePath}uah_portrait_logo.png';
+  static const String landscapelogo = '${_imagePath}uah_landscape_logo.png';
+  static const String portraitdarklogo = '${_imagePath}portrait_dark.png';
+  static const String landscapedarklogo = '${_imagePath}landscape_dark.png';
+}
