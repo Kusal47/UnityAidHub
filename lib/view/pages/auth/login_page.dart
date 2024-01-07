@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:unity_admin/main.dart';
 
+import '../../../core/const/app_string.dart';
+import '../../../core/const/assets_path.dart';
 import '../../../core/routes/routes_name.dart';
 import '../../../resources/custom_textfield.dart';
+import '../../../utils/button_fields.dart';
+import '../../home_screen/home_screen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,6 +16,9 @@ class LoginPage extends StatelessWidget {
     TextEditingController _userNameController = TextEditingController();
     _userNameController.text = "admin";
     _passwordController.text = "abcd123";
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
         // backgroundColor: const Color(0xff262e38),
         body: Center(
@@ -24,6 +32,26 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                screenWidth <= 600
+                    ? Container(
+                        height: 100,
+                        width: 200,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  AssetsPath.portraitdarklogo,
+                                ),
+                                filterQuality: FilterQuality.high)))
+                    : Container(
+                        height: 100,
+                        width: 200,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  AssetsPath.landscapedarklogo,
+                                ),
+                                filterQuality: FilterQuality.high))),
+
                 const Text(
                   "Log Into Unity Aid Hub ",
                   style: TextStyle(
@@ -42,40 +70,56 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                CustomFields(
-                  controller: _userNameController,
-                  title: "Admin Login",
-                  icon: Icons.person,
-                  hintText: "Enter Username",
-                  labelText: "Username",
-                ),
-                CustomFields(
-                  controller: _passwordController,
-                  isPassword:true,
-                  title: "Password",
-                  icon: Icons.person,
-                  hintText: "Enter Password",
-                  labelText: "Password",
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      CustomTextFields(
+                        controller: _userNameController,
+                        text: "Admin Login",
+                        isEmail: true,
+                        hinttext: "Enter Username",
+                        labeltext: "Username",
+                      ),
+                      CustomTextFields(
+                        controller: _passwordController,
+                        isPassword: true,
+                        text: "Password",
+                        hinttext: "Enter Password",
+                        labeltext: "Password",
+                      ),
+
+                      // submit button decorated
+                      ButtonFields(
+                        text: AppString.login,
+                        // gradientBtn: AppColor.gradientColor,
+                        onTap: () async {
+                          // if (formKey.currentState!.validate()) {}
+                          Navigator.pushNamed(context, RouteName.dashboard);
+                        },
+                        txtColor: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
 
-                // submit button decorated
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RouteName.shell);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF44F249),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 20),
-                  ),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, RouteName.shell);
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: const Color(0xFF44F249),
+                //     padding: const EdgeInsets.symmetric(
+                //         horizontal: 50, vertical: 20),
+                //   ),
+                //   child: const Text(
+                //     "Login",
+                //     style: TextStyle(
+                //         fontSize: 20,
+                //         fontWeight: FontWeight.bold,
+                //         color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ),
