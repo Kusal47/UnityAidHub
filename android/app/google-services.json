@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "436639168127",
+    "project_id": "unityaidhub",
+    "storage_bucket": "unityaidhub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436639168127:android:d1a055a48c5943b016314a",
+        "android_client_info": {
+          "package_name": "com.example.unity_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS2oIz32lmZ3BMQjbuWGdC2LlsdGpzLT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
