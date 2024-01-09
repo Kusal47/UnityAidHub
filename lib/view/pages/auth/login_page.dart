@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unity_admin/view_model/login_signup_view_model.dart';
 import '../../../core/const/export.dart';
-import '../../../core/routes/routes_name.dart';
 import '../../../resources/custom_textfield.dart';
 import '../../../utils/button_fields.dart';
 
@@ -8,12 +9,11 @@ class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    TextEditingController _passwordController = TextEditingController();
-    TextEditingController _userNameController = TextEditingController();
-    _userNameController.text = "admin";
-    _passwordController.text = "abcd123";
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     double screenWidth = MediaQuery.of(context).size.width;
+    final viewModel = Provider.of<LoginViewModel>(context);
+    viewModel.usernameController.text = "admin" ;
+    viewModel.passController.text =  "A@bcd123";
 
     return Scaffold(
         // backgroundColor: const Color(0xff262e38),
@@ -71,14 +71,14 @@ class LoginPage extends StatelessWidget {
                   child: Column(
                     children: [
                       CustomTextFields(
-                        controller: _userNameController,
+                        controller: viewModel.usernameController,
                         text: "Admin Login",
-                        isEmail: true,
+                        isUsername: true,
                         hinttext: "Enter Username",
                         labeltext: "Username",
                       ),
                       CustomTextFields(
-                        controller: _passwordController,
+                        controller: viewModel.passController,
                         isPassword: true,
                         text: "Password",
                         hinttext: "Enter Password",
@@ -90,8 +90,9 @@ class LoginPage extends StatelessWidget {
                         text: AppString.login,
                         // gradientBtn: AppColor.gradientColor,
                         onTap: () async {
-                          // if (formKey.currentState!.validate()) {}
-                          Navigator.pushNamed(context, RouteName.dashboard);
+                          if (formKey.currentState!.validate()) {
+                            await viewModel.loginUser(context);
+                          }
                         },
                         txtColor: Colors.white,
                       ),
