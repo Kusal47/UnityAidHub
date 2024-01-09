@@ -206,24 +206,12 @@ class MyScaffold extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 20,
-          toolbarHeight: 70,
-          title: screenWidth <= 600
-              ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                    AssetsPath.portraitlogo,
-                    filterQuality: FilterQuality.high,
-                    height: 70,
-                  ),
-              )
-              : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                    AssetsPath.landscapelogo,
-                    filterQuality: FilterQuality.high,
-                    height: 60,
-                  ),
-              ),
+          toolbarHeight: 80,
+          title: Image.asset(
+              AssetsPath.landscapedarklogo,
+              filterQuality: FilterQuality.high,
+              height: 70,
+            ),
           backgroundColor: AppColor.secondaryColor,
           actions: [
             Padding(
