@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:unity_admin/core/routes/routes_name.dart';
-import 'package:unity_admin/main.dart';
+import '../../../utils/text_design.dart';
+import '../AdminScaffold/admin_scaffold_page.dart';
 
 class PagesSection extends StatelessWidget {
   const PagesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(route: RouteName.pagesection, body: Container(child: Text('PageSection'),));
+    return MyScaffold(route: RouteName.pagesection, body: Container(child: const TextDesign(text:
+          'Pages Section',
+            fontweight: FontWeight.w700,
+            fontsize: 24,
+          
+        ),));
   }
 }

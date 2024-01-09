@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:unity_admin/main.dart';
-
-import '../../../core/const/app_string.dart';
-import '../../../core/const/assets_path.dart';
-import '../../../core/routes/routes_name.dart';
+import 'package:provider/provider.dart';
+import 'package:unity_admin/view_model/login_signup_view_model.dart';
+import '../../../core/const/export.dart';
+import '../../../core/theme/app_color.dart';
 import '../../../resources/custom_textfield.dart';
 import '../../../utils/button_fields.dart';
-import '../../home_screen/home_screen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    TextEditingController _passwordController = TextEditingController();
-    TextEditingController _userNameController = TextEditingController();
-    _userNameController.text = "admin";
-    _passwordController.text = "abcd123";
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     double screenWidth = MediaQuery.of(context).size.width;
+    final viewModel = Provider.of<LoginViewModel>(context);
+    viewModel.usernameController.text = "admin" ;
+    viewModel.passController.text =  "A@bcd123";
 
     return Scaffold(
         // backgroundColor: const Color(0xff262e38),
         body: Center(
       child: Card(
+        shadowColor: Colors.grey[0],
+        elevation: 20,
         child: Container(
-          color: Colors.white,
-          width: 500,
+          color: AppColor.greyColor,
+          width: 450,
           height: 500,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -52,10 +51,10 @@ class LoginPage extends StatelessWidget {
                                 ),
                                 filterQuality: FilterQuality.high))),
 
-                const Text(
+                 Text(
                   "Log Into Unity Aid Hub ",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColor.darkColor,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -68,21 +67,21 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
                 Form(
                   key: formKey,
                   child: Column(
                     children: [
                       CustomTextFields(
-                        controller: _userNameController,
+                        controller: viewModel.usernameController,
                         text: "Admin Login",
-                        isEmail: true,
+                        isUsername: true,
                         hinttext: "Enter Username",
                         labeltext: "Username",
                       ),
                       CustomTextFields(
-                        controller: _passwordController,
+                        controller: viewModel.passController,
                         isPassword: true,
                         text: "Password",
                         hinttext: "Enter Password",
@@ -94,10 +93,11 @@ class LoginPage extends StatelessWidget {
                         text: AppString.login,
                         // gradientBtn: AppColor.gradientColor,
                         onTap: () async {
-                          // if (formKey.currentState!.validate()) {}
-                          Navigator.pushNamed(context, RouteName.dashboard);
+                          if (formKey.currentState!.validate()) {
+                            await viewModel.loginUser(context);
+                          }
                         },
-                        txtColor: Colors.white,
+                        txtColor: AppColor.whiteColor,
                       ),
                     ],
                   ),

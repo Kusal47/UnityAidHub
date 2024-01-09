@@ -25,7 +25,7 @@ class ButtonFields extends StatelessWidget {
   final bool isDownload;
   @override
   Widget build(BuildContext context) {
-    double containerheight = MediaQuery.of(context).size.height / 15.8;
+    double containerheight = MediaQuery.of(context).size.height / 15;
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: SizedBox(
@@ -38,7 +38,7 @@ class ButtonFields extends StatelessWidget {
                 child: Container(
                   height: 50,
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(Radius.circular(7)),
                 color: Color(0xFF44F249)
                   ),
                   child: Center(
