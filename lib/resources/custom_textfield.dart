@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../core/const/app_string.dart';
+import '../core/theme/app_color.dart';
+import '../utils/Helper Funtions/helper_functions.dart';
+import '../utils/text_design.dart';
 
 class CustomTextFields extends StatefulWidget {
   const CustomTextFields({
@@ -54,31 +57,6 @@ class CustomTextFields extends StatefulWidget {
 
 class _CustomTextFieldsState extends State<CustomTextFields> {
   bool isHidden = true;
-
-  bool hasUppercaseLetter(String password) {
-    final pattern = RegExp(r'[A-Z]');
-    return pattern.hasMatch(password);
-  }
-
-  bool hasLowercaseLetter(String password) {
-    final pattern = RegExp(r'[a-z]');
-    return pattern.hasMatch(password);
-  }
-
-  bool hasDigit(String password) {
-    final pattern = RegExp(r'[0-9]');
-    return pattern.hasMatch(password);
-  }
-
-  bool hasSpecialCharacter(String password) {
-    final pattern = RegExp(r'[!@#\$%^&*()_+{}|~<>,.?/:;[\]-]');
-    return pattern.hasMatch(password);
-  }
-
-  bool hasValidLength(String password) {
-    return password.length >= 8 && password.length <= 15;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -87,7 +65,7 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(widget.text!),
+              child: TextDesign(text:widget.text!,fontweight: FontWeight.w600,fontsize: 14,),
             )
           ],
         ),
@@ -106,14 +84,11 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                   return null;
                 },
                 decoration: InputDecoration(
-                  // filled: true,
-                  fillColor: Colors.white.withOpacity(0.07999999821186066),
-                  hintStyle: const TextStyle(
-                    color: Color(0xFF44F249),
+                  fillColor: Colors.white.withOpacity(0.079999998211860699),
+                  hintStyle:  TextStyle(
+                    color:  AppColor.darkColor,
                   ),
                   contentPadding: const EdgeInsets.all(8),
-                  filled: true,
-                  // fillColor: AppColor.containerColor,
                   focusedBorder: const OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFF44F249), width: 2.0),
@@ -176,15 +151,15 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                   if (widget.isPassword) {
                     if (value == null || value.isEmpty) {
                       return AppString.required_Password;
-                    } else if (!hasUppercaseLetter(value)) {
+                    } else if (!HelperFunctions().hasUppercaseLetter(value)) {
                       return AppString.validate_Password_Uppercase;
-                    } else if (!hasLowercaseLetter(value)) {
+                    } else if (!HelperFunctions().hasLowercaseLetter(value)) {
                       return AppString.validate_Password_Lowercase;
-                    } else if (!hasDigit(value)) {
+                    } else if (!HelperFunctions().hasDigit(value)) {
                       return AppString.validate_Password_Number;
-                    } else if (!hasSpecialCharacter(value)) {
+                    } else if (!HelperFunctions().hasSpecialCharacter(value)) {
                       return AppString.validate_Password_SpecialCharacter;
-                    } else if (!hasValidLength(value)) {
+                    } else if (!HelperFunctions().hasValidLength(value)) {
                       return AppString.validate_Password_Length;
                     }
                     return null;
@@ -192,6 +167,7 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                   return null;
                 },
                 decoration: InputDecoration(
+                   fillColor: Colors.white.withOpacity(0.07999999821186066),
                   focusedBorder: const OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFF44F249), width: 2.0),
@@ -217,22 +193,26 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                               : const Icon(Icons.visibility_off,
                                   color: Color(0xFF44F249)))
                       : widget.isEmail
+                          ? const Icon(Icons.email, color: Color(0xFF44F249))
+                        
+                      : widget.isUsername
                           ? const Icon(Icons.person, color: Color(0xFF44F249))
                           : null,
                   labelStyle: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     height: 1,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF44F249),
                   ),
-                  hintStyle: const TextStyle(
-                    fontSize: 16,
+                  hintStyle:  TextStyle(
+                    fontSize: 14,
                     height: 1,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF44F249),
+                    color:  AppColor.darkColor,
                   ),
                   labelText:widget.labeltext
                 ),
+             
               ),
         const SizedBox(height: 10),
       ],
