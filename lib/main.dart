@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
         // brightness: Brightness.dark,
 
         appBarTheme: AppBarTheme(
-            iconTheme: const IconThemeData().copyWith(color: Colors.white70),
+            iconTheme: const IconThemeData().copyWith(color: Colors.black),
             // backgroundColor: Colors.white,
             titleTextStyle: const TextStyle(
               color: Colors.white,
@@ -206,36 +206,20 @@ class MyScaffold extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 20,
-          toolbarHeight: 70,
-          title: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, RouteName.dashboard);
-              },
-              child: screenWidth <= 600
-                  ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                        AssetsPath.portraitlogo,
-                        filterQuality: FilterQuality.high,
-                        height: 70,
-                      ),
-                  )
-                  : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                        AssetsPath.landscapelogo,
-                        filterQuality: FilterQuality.high,
-                        height: 60,
-                      ),
-                  )),
+          toolbarHeight: 80,
+          title: Image.asset(
+              AssetsPath.landscapedarklogo,
+              filterQuality: FilterQuality.high,
+              height: 70,
+            ),
           backgroundColor: AppColor.secondaryColor,
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: PopupMenuButton<AdminMenuItem>(
-                child: Icon(
+                child: const Icon(
                   Icons.account_circle,
-                  color: AppColor.whiteColor,
+                  // color: AppColor.whiteColor,
                   size: 30,
                 ),
                 itemBuilder: (context) {
@@ -275,10 +259,10 @@ class MyScaffold extends StatelessWidget {
           backgroundColor: AppColor.secondaryColor,
           activeBackgroundColor: AppColor.whiteColor,
           borderColor: const Color(0xFFE7E7E7),
-          iconColor: AppColor.whiteColor,
+          iconColor: Colors.black,
           activeIconColor: AppColor.secondaryColor,
-          textStyle: TextStyle(
-            color: AppColor.whiteColor,
+          textStyle: const TextStyle(
+            color: Colors.black,
             fontSize: 14,
           ),
           activeTextStyle: TextStyle(

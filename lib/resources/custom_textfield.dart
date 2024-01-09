@@ -231,6 +231,7 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF44F249),
                   ),
+                  labelText:widget.labeltext
                 ),
               ),
         const SizedBox(height: 10),
