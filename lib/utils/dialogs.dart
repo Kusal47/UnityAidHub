@@ -8,10 +8,10 @@ void showLoadingDialog(BuildContext context) {
     barrierDismissible: false, 
     builder: (context) {
       return Center(
-        child: SpinKitWave(
+        child: SpinKitWanderingCubes(
           color: AppColor.primaryColor, 
           size: 40.0, 
-          itemCount: 7,
+          // itemCount: 7,
         ),
       );
     },
