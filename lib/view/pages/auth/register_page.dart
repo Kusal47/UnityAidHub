@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:unity_admin/view_model/login_signup_view_model.dart';
 import '../../../core/const/export.dart';
 import '../../../resources/custom_textfield.dart';
 import '../../../utils/button_fields.dart';
@@ -16,11 +17,12 @@ class RegisterView extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passController = TextEditingController();
     final TextEditingController passConfirmController = TextEditingController();
+    final viewModel = Provider.of<RegisterViewModel>(context);
     return MyScaffold(
       route: '/register',
       body: Center(
         child: Padding(
-       padding: const EdgeInsets.only( top: 40),
+          padding: const EdgeInsets.only(top: 40),
           child: Card(
             child: Container(
               color: Colors.white,
@@ -73,7 +75,9 @@ class RegisterView extends StatelessWidget {
                             text: AppString.register,
                             // gradientBtn: AppColor.gradientColor,
                             onTap: () async {
-                              if (formKey.currentState!.validate()) {}
+                              if (formKey.currentState!.validate()) {
+                                viewModel.registerUser(context);
+                              }
                             },
                             txtColor: Colors.white,
                           ),
