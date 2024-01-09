@@ -128,12 +128,12 @@ class LogOutViewModel extends ChangeNotifier {
     (isLoading) ? showLoadingDialog(context) : const SizedBox();
     notifyListeners();
     try {
-      CostumNotificationBar.toastMessage('Admin LogOut Successfull');
+      CostumNotificationBar.toastMessage('Admin Logout Successfull');
       isLoading = false;
       notifyListeners();
       Navigator.pushNamed(context, RouteName.login);
     } catch (e) {
-      CostumNotificationBar.toastMessage('Admin LogOut Unsuccessfull');
+      CostumNotificationBar.toastMessage('Admin Logout Unsuccessfull');
       isLoading = false;
       notifyListeners();
       Navigator.of(context).pushReplacementNamed(RouteName.login);
