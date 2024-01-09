@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
-import '../../../core/const/app_string.dart';
-import '../../../main.dart';
+import '../../../core/const/export.dart';
 import '../../../resources/custom_textfield.dart';
 import '../../../utils/button_fields.dart';
 import '../../../utils/text_design.dart';
+import '../AdminScaffold/admin_scaffold_page.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key, Key? keys});
@@ -37,7 +37,7 @@ class RegisterView extends StatelessWidget {
                         children: [
                           const TextDesign(
                             text: AppString.registerText,
-                            fontsize: 26,
+                            fontsize: 24,
                             fontweight: FontWeight.bold,
                           ),
                           const SizedBox(
