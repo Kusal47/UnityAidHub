@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import 'package:provider/provider.dart';
+import 'package:unity_admin/view_model/login_signup_view_model.dart';
 
 import '../../../core/const/assets_path.dart';
 import '../../../core/routes/routes_name.dart';
@@ -95,8 +97,7 @@ class MyScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    print('width is $screenWidth');
+    final viewModel = Provider.of<LogOutViewModel>(context);
     return SizedBox(
       height: screenHeight,
       width: screenWidth,
@@ -106,10 +107,10 @@ class MyScaffold extends StatelessWidget {
           elevation: 20,
           toolbarHeight: 80,
           title: Image.asset(
-              AssetsPath.landscapedarklogo,
-              filterQuality: FilterQuality.high,
-              height: 70,
-            ),
+            AssetsPath.landscapedarklogo,
+            filterQuality: FilterQuality.high,
+            height: 70,
+          ),
           backgroundColor: AppColor.secondaryColor,
           actions: [
             Padding(
@@ -147,6 +148,9 @@ class MyScaffold extends StatelessWidget {
                 onSelected: (item) {
                   print(
                       'actions: onSelected(): title = ${item.title}, route = ${item.route}');
+                  if (item.title == 'Logout') {
+                    viewModel.logoutUser(context);
+                  }
                   Navigator.of(context).pushNamed(item.route!);
                 },
               ),
@@ -210,4 +214,3 @@ class MyScaffold extends StatelessWidget {
     );
   }
 }
-
