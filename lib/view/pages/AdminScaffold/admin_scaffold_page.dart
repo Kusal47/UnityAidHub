@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'package:unity_admin/view_model/login_signup_view_model.dart';
-
 import '../../../core/const/assets_path.dart';
 import '../../../core/routes/routes_name.dart';
 import '../../../core/theme/app_color.dart';
@@ -16,7 +15,6 @@ class MyScaffold extends StatelessWidget {
 
   final Widget body;
   final String route;
-
   final List<AdminMenuItem> _sideBarItems = const [
     AdminMenuItem(
       title: 'Dashboard',
@@ -36,7 +34,7 @@ class MyScaffold extends StatelessWidget {
     AdminMenuItem(
       title: 'Roles Management',
       route: RouteName.rolesmanagement,
-      icon: Icons.person_pin_sharp,
+      icon: Icons.settings_outlined,
     ),
     AdminMenuItem(
       title: 'Post Verification',
@@ -102,7 +100,7 @@ class MyScaffold extends StatelessWidget {
       height: screenHeight,
       width: screenWidth,
       child: AdminScaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColor.greyColor,
         appBar: AppBar(
           elevation: 20,
           toolbarHeight: 80,
@@ -116,11 +114,11 @@ class MyScaffold extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: PopupMenuButton<AdminMenuItem>(
-                child: const Icon(
+                icon: const Icon(
                   Icons.account_circle,
                   // color: AppColor.whiteColor,
-                  size: 30,
                 ),
+                iconSize: 30,
                 itemBuilder: (context) {
                   return _adminMenuItems.map((AdminMenuItem item) {
                     return PopupMenuItem<AdminMenuItem>(
@@ -129,7 +127,7 @@ class MyScaffold extends StatelessWidget {
                         children: [
                           Icon(
                             item.icon,
-                            color: Colors.black,
+                            color: AppColor.darkColor,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
@@ -159,17 +157,19 @@ class MyScaffold extends StatelessWidget {
         ),
         sideBar: SideBar(
           backgroundColor: AppColor.secondaryColor,
-          activeBackgroundColor: AppColor.whiteColor,
-          borderColor: const Color(0xFFE7E7E7),
-          iconColor: Colors.black,
-          activeIconColor: AppColor.secondaryColor,
-          textStyle: const TextStyle(
-            color: Colors.black87,
+          activeBackgroundColor: AppColor.greyColor,
+          borderColor: AppColor.whiteColor,
+          iconColor: AppColor.darkColor,
+          activeIconColor: AppColor.darkColor,
+          textStyle: TextStyle(
+            color: AppColor.darkColor,
             fontSize: 14,
+            fontWeight: FontWeight.w600
           ),
           activeTextStyle: TextStyle(
-            color: AppColor.secondaryColor,
+            color: AppColor.darkColor,
             fontSize: 14,
+            fontWeight: FontWeight.w600
           ),
           items: _sideBarItems,
           selectedRoute: route,
@@ -180,32 +180,6 @@ class MyScaffold extends StatelessWidget {
               Navigator.of(context).pushNamed(item.route!);
             }
           },
-          // header: Container(
-          //   height: 50,
-          //   width: double.infinity,
-          //   color: const Color(0xff444444),
-          //   child: const Center(
-          //     child: Text(
-          //       'header',
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // footer: Container(
-          //   height: 50,
-          //   width: double.infinity,
-          //   color: const Color(0xff444444),
-          //   child: const Center(
-          //     child: Text(
-          //       'footer',
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ),
         body: SingleChildScrollView(
           child: body,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unity_admin/view_model/category_view_model.dart';
 import 'core/routes/router_generator.dart';
 import 'core/routes/routes_name.dart';
+import 'core/theme/app_color.dart';
 import 'view_model/login_signup_view_model.dart';
 
 void main() {
@@ -24,6 +26,8 @@ class _MyAppState extends State<MyApp> {
               create: (_) => RegisterViewModel()),
         ChangeNotifierProvider<LogOutViewModel>(
               create: (_) => LogOutViewModel()),
+        ChangeNotifierProvider<CategoryViewModel>(
+              create: (_) => CategoryViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -32,38 +36,38 @@ class _MyAppState extends State<MyApp> {
           // brightness: Brightness.dark,
     
           appBarTheme: AppBarTheme(
-              iconTheme: const IconThemeData().copyWith(color: Colors.black),
+              iconTheme: const IconThemeData().copyWith(color: AppColor.darkColor),
               // backgroundColor: Colors.white,
-              titleTextStyle: const TextStyle(
-                color: Colors.white,
+              titleTextStyle:  TextStyle(
+                color: AppColor.whiteColor,
                 fontFamily: 'Montserrat',
               )),
-          // scaffoldBackgroundColor: const Color(0xFF121212),
+          scaffoldBackgroundColor: AppColor.greyColor,
           // backgroundColor: const Color(0xFF121212),
-          primaryColor: Colors.black,
+          primaryColor: AppColor.darkColor,
           // // accentColor: const Color(0xFF1DB954),
-          iconTheme: const IconThemeData().copyWith(color: Colors.black),
+          iconTheme: const IconThemeData().copyWith(color:  AppColor.darkColor),
           fontFamily: 'Montserrat',
-          textTheme: const TextTheme(
+          textTheme:  TextTheme(
             headline2: TextStyle(
-              color: Colors.black,
+              color:  AppColor.darkColor,
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
             ),
             headline4: TextStyle(
               fontSize: 12.0,
-              color: Colors.black,
+              color:  AppColor.darkColor,
               fontWeight: FontWeight.w500,
               letterSpacing: 2.0,
             ),
             bodyText1: TextStyle(
-              color: Colors.black,
+              color:  AppColor.darkColor,
               fontSize: 14.0,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.0,
             ),
             bodyText2: TextStyle(
-              color: Colors.black,
+              color:  AppColor.darkColor,
               letterSpacing: 1.0,
             ),
           ),

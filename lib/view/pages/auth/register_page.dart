@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unity_admin/core/theme/app_color.dart';
 import 'package:unity_admin/view_model/login_signup_view_model.dart';
 import '../../../core/const/export.dart';
 import '../../../resources/custom_textfield.dart';
@@ -13,10 +14,6 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final TextEditingController userNameController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passController = TextEditingController();
-    final TextEditingController passConfirmController = TextEditingController();
     final viewModel = Provider.of<RegisterViewModel>(context);
     return MyScaffold(
       route: '/register',
@@ -24,16 +21,19 @@ class RegisterView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(top: 40),
           child: Card(
+            shadowColor: Colors.grey[0],
+            elevation: 20,
             child: Container(
-              color: Colors.white,
-              width: 700,
-              height: 700,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Form(
+              color: AppColor.greyColor,
+              width: 550,
+              height: 490,
+               padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
                       key: formKey,
                       child: Column(
                         children: [
@@ -47,29 +47,29 @@ class RegisterView extends StatelessWidget {
                           ),
                           CustomTextFields(
                             text: AppString.username,
-                            controller: userNameController,
+                            controller: viewModel.userNameController,
                             hinttext: AppString.usernamehint,
                             isUsername: true,
                           ),
                           CustomTextFields(
                             text: AppString.email,
-                            controller: emailController,
+                            controller: viewModel.emailController,
                             hinttext: AppString.emailhint,
                             isEmail: true,
                           ),
                           CustomTextFields(
                             text: AppString.password,
-                            controller: passController,
+                            controller: viewModel.passController,
                             hinttext: AppString.passwordhint,
                             isPassword: true,
                           ),
                           CustomTextFields(
                             text: AppString.confirmpassword,
-                            controller: passConfirmController,
+                            controller: viewModel.passConfirmController,
                             hinttext: AppString.confirmpasswordhint,
                             isPassword: true,
                             isConfirm: true,
-                            confirmPasswordController: passController,
+                            confirmPasswordController: viewModel.passController,
                           ),
                           ButtonFields(
                             text: AppString.register,
@@ -79,13 +79,13 @@ class RegisterView extends StatelessWidget {
                                 viewModel.registerUser(context);
                               }
                             },
-                            txtColor: Colors.white,
+                            txtColor: AppColor.whiteColor,
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
