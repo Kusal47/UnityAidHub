@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:provider/provider.dart';
@@ -29,12 +30,12 @@ class MyScaffold extends StatelessWidget {
     AdminMenuItem(
       title: 'User Management',
       route: RouteName.usermanagement,
-      icon: Icons.person_pin_sharp,
+      icon: CupertinoIcons.group_solid,
     ),
     AdminMenuItem(
       title: 'Roles Management',
       route: RouteName.rolesmanagement,
-      icon: Icons.settings_outlined,
+      icon: CupertinoIcons.settings_solid
     ),
     AdminMenuItem(
       title: 'Post Verification',
@@ -59,7 +60,7 @@ class MyScaffold extends StatelessWidget {
     AdminMenuItem(
       title: 'Page Section',
       route: RouteName.pagesection,
-      icon: Icons.pages,
+      icon: CupertinoIcons.news_solid,
     ),
     AdminMenuItem(
       title: 'Blog',
@@ -69,7 +70,7 @@ class MyScaffold extends StatelessWidget {
     AdminMenuItem(
       title: 'Register',
       route: RouteName.register,
-      icon: Icons.person_add_alt_1,
+      icon: CupertinoIcons.person_add_solid,
     ),
   ];
 
