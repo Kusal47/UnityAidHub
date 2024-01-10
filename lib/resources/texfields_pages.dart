@@ -35,6 +35,7 @@ class CustomFields extends StatelessWidget {
     return Column(
       children: [
         TextFormField(
+          cursorColor: AppColor.primaryColor,
           // readOnly: widget.isdate ? true : false,
           controller: controller,
           keyboardType: isNumber ? TextInputType.number : TextInputType.text,
@@ -54,22 +55,22 @@ class CustomFields extends StatelessWidget {
           },
         decoration: InputDecoration(
                    fillColor: Colors.white.withOpacity(0.07999999821186066),
-                  focusedBorder: const OutlineInputBorder(
+                  focusedBorder:  OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Color(0xFF44F249), width: 2.0),
+                        BorderSide(color: AppColor.secondaryColor, width: 2.0),
                   ),
-                  border: const OutlineInputBorder(
+                  border:  OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Color(0xFF44F249),
-                      width: 2.0,
+                      color: AppColor.borderColor,
+                      width: 1.0,
                     ),
                   ),
                   hintText: hinttext,
-                  labelStyle: const TextStyle(
+                  labelStyle:  TextStyle(
                     fontSize: 14,
                     height: 1,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF44F249),
+                    color: AppColor.secondaryColor,
                   ),
                   hintStyle:  TextStyle(
                     fontSize: 14,

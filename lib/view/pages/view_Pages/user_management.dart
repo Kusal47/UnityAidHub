@@ -53,9 +53,9 @@ class UserManagement extends StatelessWidget {
       route: RouteName.usermanagement,
       body: SizedBox(
         child: Align(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.only(top:30.0,left:30.0,bottom:10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

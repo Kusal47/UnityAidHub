@@ -33,10 +33,9 @@ class MyScaffold extends StatelessWidget {
       icon: CupertinoIcons.group_solid,
     ),
     AdminMenuItem(
-      title: 'Roles Management',
-      route: RouteName.rolesmanagement,
-      icon: CupertinoIcons.settings_solid
-    ),
+        title: 'Roles Management',
+        route: RouteName.rolesmanagement,
+        icon: CupertinoIcons.settings_solid),
     AdminMenuItem(
       title: 'Post Verification',
       route: RouteName.postverify,
@@ -105,53 +104,65 @@ class MyScaffold extends StatelessWidget {
         appBar: AppBar(
           elevation: 20,
           toolbarHeight: 80,
-          title: Image.asset(
-            AssetsPath.landscapedarklogo,
-            filterQuality: FilterQuality.high,
-            height: 70,
+          title: MouseRegion(
+             cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushReplacementNamed(context, RouteName.dashboard);
+              },
+              child: Image.asset(
+                AssetsPath.landscapedarklogo,
+                filterQuality: FilterQuality.high,
+                height: 70,
+              ),
+            ),
           ),
           backgroundColor: AppColor.secondaryColor,
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: PopupMenuButton<AdminMenuItem>(
-                icon: const Icon(
-                  Icons.account_circle,
-                  // color: AppColor.whiteColor,
-                ),
-                iconSize: 30,
-                itemBuilder: (context) {
-                  return _adminMenuItems.map((AdminMenuItem item) {
-                    return PopupMenuItem<AdminMenuItem>(
-                      value: item,
-                      child: Row(
-                        children: [
-                          Icon(
-                            item.icon,
-                            color: AppColor.darkColor,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              item.title,
-                              style: const TextStyle(
-                                fontSize: 14,
+              child: MouseRegion(
+             cursor: SystemMouseCursors.click,
+                child: PopupMenuButton<AdminMenuItem>(
+                  tooltip: 'Admin Profile',
+                  icon: const Icon(
+                    Icons.account_circle,
+                    // color: AppColor.whiteColor,
+                  ),
+                  iconSize: 30,
+                  itemBuilder: (context) {
+                    return _adminMenuItems.map((AdminMenuItem item) {
+                      return PopupMenuItem<AdminMenuItem>(
+                        value: item,
+                        child: Row(
+                          children: [
+                            Icon(
+                              item.icon,
+                              color: AppColor.darkColor,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                item.title,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
-                onSelected: (item) {
-                  print(
-                      'actions: onSelected(): title = ${item.title}, route = ${item.route}');
-                  if (item.title == 'Logout') {
-                    viewModel.logoutUser(context);
-                  }
-                  Navigator.of(context).pushNamed(item.route!);
-                },
+                          ],
+                        ),
+                      );
+                    }).toList();
+                  },
+                  onSelected: (item) {
+                    print(
+                        'actions: onSelected(): title = ${item.title}, route = ${item.route}');
+                    if (item.title == 'Logout') {
+                      viewModel.logoutUser(context);
+                    }
+                    Navigator.of(context).pushNamed(item.route!);
+                  },
+                ),
               ),
             ),
           ],
@@ -163,15 +174,13 @@ class MyScaffold extends StatelessWidget {
           iconColor: AppColor.darkColor,
           activeIconColor: AppColor.darkColor,
           textStyle: TextStyle(
-            color: AppColor.darkColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w600
-          ),
+              color: AppColor.darkColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w600),
           activeTextStyle: TextStyle(
-            color: AppColor.darkColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w600
-          ),
+              color: AppColor.darkColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w600),
           items: _sideBarItems,
           selectedRoute: route,
           onSelected: (item) {
