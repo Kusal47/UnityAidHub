@@ -4,8 +4,10 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
+  file_selector_windows
   firebase_core
   flutter_secure_storage_windows
+  gal
   irondash_engine_context
   sqlite3_flutter_libs
   super_native_extensions
