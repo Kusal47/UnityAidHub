@@ -9,10 +9,11 @@ class TextDesign extends StatelessWidget {
       this.color,
       this.textAlign,
       this.maxLines,
-      this.overflow});
+      this.overflow, this.fontStyle});
   final String text;
   final double? fontsize;
   final FontWeight? fontweight;
+  final FontStyle? fontStyle;
   final Color? color;
   final TextAlign? textAlign;
   final int? maxLines;
@@ -25,6 +26,7 @@ class TextDesign extends StatelessWidget {
       style: TextStyle(
         fontSize: fontsize,
         fontWeight: fontweight,
+        fontStyle: fontStyle,
         color: color,
       ),
       textAlign: textAlign,

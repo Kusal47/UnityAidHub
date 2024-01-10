@@ -65,12 +65,17 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: TextDesign(text:widget.text!,fontweight: FontWeight.w600,fontsize: 14,),
+              child: TextDesign(
+                text: widget.text!,
+                fontweight: FontWeight.w600,
+                fontsize: 14,
+              ),
             )
           ],
         ),
         widget.isConfirm
             ? TextFormField(
+                cursorColor: AppColor.primaryColor,
                 style: const TextStyle(),
                 obscureText: widget.isConfirm ? isHidden : false,
                 controller: widget.controller,
@@ -85,8 +90,8 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                 },
                 decoration: InputDecoration(
                   fillColor: Colors.white.withOpacity(0.079999998211860699),
-                  hintStyle:  TextStyle(
-                    color:  AppColor.darkColor,
+                  hintStyle: TextStyle(
+                    color: AppColor.darkColor,
                   ),
                   contentPadding: const EdgeInsets.all(8),
                   focusedBorder: const OutlineInputBorder(
@@ -116,6 +121,7 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                 ),
               )
             : TextFormField(
+                cursorColor: AppColor.primaryColor,
                 readOnly: widget.isdate ? true : false,
                 obscureText: widget.isPassword ? isHidden : false,
                 controller: widget.controller,
@@ -167,52 +173,50 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
                   return null;
                 },
                 decoration: InputDecoration(
-                   fillColor: Colors.white.withOpacity(0.07999999821186066),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF44F249), width: 2.0),
-                  ),
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0xFF44F249),
-                      width: 2.0,
+                    fillColor: Colors.white.withOpacity(0.07999999821186066),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFF44F249), width: 2.0),
                     ),
-                  ),
-                  hintText: widget.hinttext,
-                  // prefix: widget.isNumber ? const Text('+977') : null,
-                  prefixIcon: widget.isPassword || widget.isConfirm
-                      ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isHidden = !isHidden;
-                            });
-                          },
-                          icon: isHidden
-                              ? const Icon(Icons.remove_red_eye_outlined,
-                                  color: Color(0xFF44F249))
-                              : const Icon(Icons.visibility_off,
-                                  color: Color(0xFF44F249)))
-                      : widget.isEmail
-                          ? const Icon(Icons.email, color: Color(0xFF44F249))
-                        
-                      : widget.isUsername
-                          ? const Icon(Icons.person, color: Color(0xFF44F249))
-                          : null,
-                  labelStyle: const TextStyle(
-                    fontSize: 14,
-                    height: 1,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF44F249),
-                  ),
-                  hintStyle:  TextStyle(
-                    fontSize: 14,
-                    height: 1,
-                    fontWeight: FontWeight.w400,
-                    color:  AppColor.darkColor,
-                  ),
-                  labelText:widget.labeltext
-                ),
-             
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF44F249),
+                        width: 2.0,
+                      ),
+                    ),
+                    hintText: widget.hinttext,
+                    // prefix: widget.isNumber ? const Text('+977') : null,
+                    prefixIcon: widget.isPassword || widget.isConfirm
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isHidden = !isHidden;
+                              });
+                            },
+                            icon: isHidden
+                                ? const Icon(Icons.remove_red_eye_outlined,
+                                    color: Color(0xFF44F249))
+                                : const Icon(Icons.visibility_off,
+                                    color: Color(0xFF44F249)))
+                        : widget.isEmail
+                            ? const Icon(Icons.email, color: Color(0xFF44F249))
+                            : widget.isUsername
+                                ? const Icon(Icons.person,
+                                    color: Color(0xFF44F249))
+                                : null,
+                    labelStyle: const TextStyle(
+                      fontSize: 14,
+                      height: 1,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF44F249),
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      height: 1,
+                      fontWeight: FontWeight.w400,
+                      color: AppColor.darkColor,
+                    ),
+                    labelText: widget.labeltext),
               ),
         const SizedBox(height: 10),
       ],

@@ -26,8 +26,8 @@ class RegisterView extends StatelessWidget {
             child: Container(
               color: AppColor.greyColor,
               width: 550,
-              height: 490,
-               padding: const EdgeInsets.all(10.0),
+              height: 500,
+               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
