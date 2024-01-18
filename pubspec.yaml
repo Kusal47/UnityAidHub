@@ -37,7 +37,10 @@ dependencies:
   firebase_core: ^2.24.2
   flutter_spinkit: ^5.2.0
   another_flushbar: ^1.12.30
-
+  window_manager: ^0.3.7
+  country_picker: ^2.0.23
+  file_picker: ^6.1.1
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter
