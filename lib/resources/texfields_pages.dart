@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../core/theme/app_color.dart';
 
@@ -9,6 +10,7 @@ class CustomFields extends StatelessWidget {
     this.hinttext,
     this.isNumber = false,
     this.isdate = false,
+    this.isSmall = false,
     this.labeltext,
     this.keyboardType,
     this.canbeNull,
@@ -25,6 +27,7 @@ class CustomFields extends StatelessWidget {
   final bool? canbeNull;
   final VoidCallback? onTap;
   final String? Function(String?)? validator;
+  final bool isSmall;
 
   void dispose() {
     controller.dispose();
@@ -32,6 +35,12 @@ class CustomFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     List<TextInputFormatter> inputFormatters = [];
+
+    // Add FilteringTextInputFormatter.digitsOnly only if isNumber is true
+    if (isNumber) {
+      inputFormatters.add(FilteringTextInputFormatter.digitsOnly);
+    }
     return Column(
       children: [
         TextFormField(
@@ -39,12 +48,13 @@ class CustomFields extends StatelessWidget {
           // readOnly: widget.isdate ? true : false,
           controller: controller,
           keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+          inputFormatters:inputFormatters,
           validator: (value) {
             if (isNumber) {
               if (value == null || value.isEmpty) {
-                return 'Phone Number field can\'t be Empty.';
-              } else if (value.length != 100) {
-                return 'Enter a valid 10-digit Phone Number';
+                return 'Amount field can\'t be Empty.';
+              } else if (value.toString()==true) {
+                return 'Enter a valid Number';
               }
               return null;
             }
@@ -53,34 +63,41 @@ class CustomFields extends StatelessWidget {
             }
             return null;
           },
-        decoration: InputDecoration(
-                   fillColor: Colors.white.withOpacity(0.07999999821186066),
-                  focusedBorder:  OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColor.secondaryColor, width: 2.0),
+          decoration: InputDecoration(
+              contentPadding: isSmall
+                  ? const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0)
+                  : null,
+            filled: true,
+        fillColor: Colors.white38.withOpacity(0.5),
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: AppColor.secondaryColor, width: 2.0),
+                  borderRadius: isSmall
+                      ? BorderRadius.circular(10)
+                      : BorderRadius.circular(0)),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColor.borderColor,
+                    width: 2.0,
                   ),
-                  border:  OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.borderColor,
-                      width: 1.0,
-                    ),
-                  ),
-                  hintText: hinttext,
-                  labelStyle:  TextStyle(
-                    fontSize: 14,
-                    height: 1,
-                    fontWeight: FontWeight.w400,
-                    color: AppColor.secondaryColor,
-                  ),
-                  hintStyle:  TextStyle(
-                    fontSize: 14,
-                    height: 1,
-                    fontWeight: FontWeight.w400,
-                    color:  AppColor.darkColor,
-                  ),
-                  labelText:labeltext
-                ),
+                  borderRadius: isSmall
+                      ? BorderRadius.circular(10)
+                      : BorderRadius.circular(0)),
+              hintText: hinttext,
+              labelStyle: TextStyle(
+                fontSize: 14,
+                height: 1,
+                fontWeight: FontWeight.w400,
+                color: AppColor.secondaryColor,
               ),
+              hintStyle: TextStyle(
+                fontSize: 14,
+                height: 1,
+                fontWeight: FontWeight.w400,
+                color: AppColor.darkColor,
+              ),
+              labelText: labeltext),
+        ),
       ],
     );
   }
