@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unity_admin/core/theme/app_color.dart';
 import 'text_design.dart';
-
 
 class ButtonFields extends StatelessWidget {
   const ButtonFields(
@@ -12,8 +12,10 @@ class ButtonFields extends StatelessWidget {
       required this.txtColor,
       this.onTap,
       this.gradientBtn,
-      this.isFeature = false,
-      this.isDownload = false});
+      this.isPrev = false,
+      this.isNext = false,
+      this.isLast = false
+      });
   final LinearGradient? gradientBtn;
   final Color? btnColor;
   final String text;
@@ -21,8 +23,9 @@ class ButtonFields extends StatelessWidget {
   final FontWeight? fontweight;
   final Color txtColor;
   final VoidCallback? onTap;
-  final bool isFeature;
-  final bool isDownload;
+  final bool isPrev;
+  final bool isNext;
+  final bool isLast;
   @override
   Widget build(BuildContext context) {
     double containerheight = MediaQuery.of(context).size.height / 15;
@@ -36,22 +39,26 @@ class ButtonFields extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  height: 50,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                color: Color(0xFF44F249)
-                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: btnColor ?? AppColor.primaryColor),
                   child: Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                       
-                        TextDesign(
-                          text: text,
-                          fontsize: 20,
-                          fontweight: FontWeight.bold,
-                          color: txtColor,
-                        ),
+                        isPrev
+                            ? const Icon(Icons.arrow_circle_left_outlined)
+                            : isNext
+                                ? const Icon(Icons.arrow_circle_right_outlined)
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextDesign(
+                                      text: text,
+                                      fontsize: fontsize??20,
+                                      fontweight: FontWeight.bold,
+                                      color: txtColor,
+                                    ),
+                                  )
                       ],
                     ),
                   ),
