@@ -6,6 +6,7 @@ import 'package:unity_admin/view_model/login_signup_view_model.dart';
 import '../../../core/const/assets_path.dart';
 import '../../../core/routes/routes_name.dart';
 import '../../../core/theme/app_color.dart';
+import '../../../utils/text_design.dart';
 
 class MyScaffold extends StatelessWidget {
   const MyScaffold({
@@ -90,6 +91,18 @@ class MyScaffold extends StatelessWidget {
       route: RouteName.login,
     ),
   ];
+  final List _list = const [
+    'New user was added.',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -103,73 +116,113 @@ class MyScaffold extends StatelessWidget {
         backgroundColor: AppColor.greyColor,
         appBar: AppBar(
           elevation: 20,
-          toolbarHeight: 80,
+          toolbarHeight: 65,
           title: MouseRegion(
-             cursor: SystemMouseCursors.click,
+            cursor: SystemMouseCursors.click,
             child: GestureDetector(
               onTap: () {
                 Navigator.pushReplacementNamed(context, RouteName.dashboard);
               },
               child: Image.asset(
                 AssetsPath.landscapedarklogo,
-                filterQuality: FilterQuality.high,
-                height: 70,
+                filterQuality: FilterQuality.medium,
+                height: 60,
               ),
             ),
           ),
           backgroundColor: AppColor.secondaryColor,
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: MouseRegion(
-             cursor: SystemMouseCursors.click,
-                child: PopupMenuButton<AdminMenuItem>(
-                  tooltip: 'Admin Profile',
-                  icon: const Icon(
-                    Icons.account_circle,
-                    // color: AppColor.whiteColor,
-                  ),
-                  iconSize: 30,
-                  itemBuilder: (context) {
-                    return _adminMenuItems.map((AdminMenuItem item) {
-                      return PopupMenuItem<AdminMenuItem>(
-                        value: item,
-                        child: Row(
-                          children: [
-                            Icon(
-                              item.icon,
-                              color: AppColor.darkColor,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                item.title,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextDesign(text:'Admin',fontweight: FontWeight.w600),
+                TextDesign(text:'Kushal Aryal',fontweight: FontWeight.w600),
+              ],
+            ),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: PopupMenuButton<AdminMenuItem>(
+                tooltip: '',
+                icon: const Icon(
+                  Icons.account_circle,
+                  // color: AppColor.whiteColor,
+                ),
+                iconSize: 30,
+                itemBuilder: (context) {
+                  return _adminMenuItems.map((AdminMenuItem item) {
+                    return PopupMenuItem<AdminMenuItem>(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Icon(
+                            item.icon,
+                            color: AppColor.darkColor,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              item.title,
+                              style: const TextStyle(
+                                fontSize: 14,
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    }).toList();
-                  },
-                  onSelected: (item) {
-                    print(
-                        'actions: onSelected(): title = ${item.title}, route = ${item.route}');
-                    if (item.title == 'Logout') {
-                      viewModel.logoutUser(context);
-                    }
-                    Navigator.of(context).pushNamed(item.route!);
-                  },
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
+                onSelected: (item) {
+                  print(
+                      'actions: onSelected(): title = ${item.title}, route = ${item.route}');
+                  if (item.title == 'Logout') {
+                    viewModel.logoutUser(context);
+                  }
+                  Navigator.of(context).pushNamed(item.route!);
+                },
+              ),
+            ),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: PopupMenuButton(
+                tooltip: '',
+                icon: const Icon(
+                  Icons.notifications_active,
+                  // color: AppColor.whiteColor,
                 ),
+                iconSize: 30,
+
+                onSelected: (item) {},
+                itemBuilder: (BuildContext context) {
+                  return _list.map((item) {
+                    return PopupMenuItem(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                    fontSize: 14, overflow: TextOverflow.visible),
+                                maxLines: 5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
               ),
             ),
           ],
         ),
         sideBar: SideBar(
           backgroundColor: AppColor.secondaryColor,
-          activeBackgroundColor: AppColor.greyColor,
+          activeBackgroundColor: AppColor.lightgreyColor,
           borderColor: AppColor.whiteColor,
           iconColor: AppColor.darkColor,
           activeIconColor: AppColor.darkColor,
