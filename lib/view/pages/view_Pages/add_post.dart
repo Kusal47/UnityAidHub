@@ -1,6 +1,6 @@
 import 'dart:typed_data';
-
 import 'package:country_picker/country_picker.dart';
+import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -14,7 +14,6 @@ import '../../../utils/button_fields.dart';
 import '../../../utils/text_design.dart';
 import '../../../view_model/add_post_view_model.dart';
 import '../AdminScaffold/admin_scaffold_page.dart';
-import 'package:path/path.dart' as path;
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -34,26 +33,31 @@ class _AddPostState extends State<AddPost> {
   ];
   var borderColor = AppColor.borderColor;
   var width = 1.0;
-  List<Uint8List> _fileBytesList = [];
-  List<String> _fileNamesList = [];
-
+  final List<Uint8List> _fileBytesList = [];
+  final List<String> _fileNamesList = [];
+  bool isChecked = false;
   void _pickFiles() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result = await FilePickerWeb.platform.pickFiles();
 
     if (result != null) {
-      List<Uint8List> bytesList =
-          result.files.map((file) => file.bytes!).toList();
-      List<String> namesList = result.files.map((file) => file.name!).toList();
+      // Clear existing files
+      setState(() {
+        _fileBytesList.clear();
+        _fileNamesList.clear();
+      });
+
+      // Add the new file
+      Uint8List bytesList = result.files.single.bytes!;
+      // result.files.single.map((file) => file.bytes!).toList();
+      String namesList = result.files.single.name;
 
       setState(() {
-        _fileBytesList.addAll(bytesList);
-        _fileNamesList.addAll(namesList);
+        _fileBytesList.add(bytesList);
+        _fileNamesList.add(namesList);
       });
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<AddPostViewModel>(context);
@@ -62,13 +66,13 @@ class _AddPostState extends State<AddPost> {
     return MyScaffold(
       route: RouteName.postadd,
       body: SizedBox(
-        height: size.height,
+        height: size.height * 0.9,
         child: PageView.builder(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             switch (index) {
-              case 0:
+              case 2:
                 return buildCategoryFundingPage(
                   context,
                   viewModel,
@@ -102,7 +106,7 @@ class _AddPostState extends State<AddPost> {
                     curve: Curves.easeInOut,
                   ),
                 );
-              case 2:
+              case 0:
                 return buildCampaignDetailsPage(
                   context,
                   viewModel,
@@ -568,8 +572,6 @@ class _AddPostState extends State<AddPost> {
                                   ),
                                   showSearchButton: false,
                                   showListCheck: false,
-                                  showAlignmentButtons: true,
-                                  showSmallButton: true,
                                 ),
                               ),
                             ),
@@ -577,6 +579,8 @@ class _AddPostState extends State<AddPost> {
                               padding: const EdgeInsets.all(8.0),
                               child: QuillEditor.basic(
                                 configurations: QuillEditorConfigurations(
+                                  textSelectionControls:
+                                      DesktopTextSelectionControls(),
                                   enableSelectionToolbar: true,
                                   customStyles: DefaultStyles(
                                     placeHolder: DefaultTextBlockStyle(
@@ -621,7 +625,9 @@ class _AddPostState extends State<AddPost> {
                 previousPage: previousPage,
               ),
               Container(
-                child: Text(viewModel.quillcontroller.document.toString()),
+                child: Text(viewModel.quillcontroller.document
+                    .toPlainText()
+                    .toString()),
               )
             ],
           ),
@@ -701,16 +707,17 @@ class _AddPostState extends State<AddPost> {
                                                 BorderRadius.circular(5),
                                             shape: BoxShape.rectangle,
                                             color: AppColor.lightgreyColor),
-                                        child: const Text('Choose Files'),
+                                        child: const Center(
+                                            child: Text('Choose Files')),
                                       ),
                                     ),
                                   )),
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: TextDesign(
-                                  text: _fileBytesList.isEmpty
+                                  text: _fileNamesList.isEmpty
                                       ? 'No files chosen'
-                                      : 'Choose more Files',
+                                      : _fileNamesList.last,
                                 ),
                               ),
                             ],
@@ -719,27 +726,25 @@ class _AddPostState extends State<AddPost> {
                         _fileBytesList.isNotEmpty
                             ? SizedBox(
                                 height: _fileBytesList.isNotEmpty
-                                    ? size.height * 0.23
+                                    ? size.height * 0.25
                                     : null,
                                 child: GridView.builder(
                                   itemCount: _fileBytesList.length,
                                   itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        TextDesign(text:_fileNamesList.isEmpty
-                                              ? ''
-                                              : _fileNamesList[index],
-                                                fontsize: 12
-                                              
-                                        ),
-                                        Image.memory(
-                                          _fileBytesList[index],
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ],
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Image.memory(
+                                            _fileBytesList[index],
+                                            height: size.height * 0.25,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ],
+                                      ),
                                     );
                                   },
-                                  physics: const ClampingScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -814,14 +819,19 @@ class _AddPostState extends State<AddPost> {
                 Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                     child: Checkbox(
-                      onChanged: (value) {},
-                      value: false,
+                      activeColor: AppColor.primaryColor,
+                      onChanged: (value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
+                      value: isChecked,
                     )),
                 const Padding(
                   padding: EdgeInsets.only(left: 8.0, top: 8.0),
                   child: TextDesign(
                     text: 'I hereby agrees all the terms and Conditions',
-                    fontsize: 12,
+                    fontsize: 16,
                     // color: AppColor.textColor,
                   ),
                 ),
