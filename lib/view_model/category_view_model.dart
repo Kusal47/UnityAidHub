@@ -10,6 +10,7 @@ class CategoryViewModel extends ChangeNotifier {
     try {} catch (e) {}
 
     print('Category Added as ${categoryController.text}');
+
     categoryController.clear();
   }
 
