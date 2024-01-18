@@ -68,7 +68,7 @@ class _AddPostState extends State<AddPost> {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             switch (index) {
-              case 3:
+              case 0:
                 return buildCategoryFundingPage(
                   context,
                   viewModel,
@@ -121,7 +121,7 @@ class _AddPostState extends State<AddPost> {
                     curve: Curves.easeInOut,
                   ),
                 );
-              case 0:
+              case 3:
                 return buildDocumentUploadPage(
                   context,
                   viewModel,
