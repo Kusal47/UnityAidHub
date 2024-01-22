@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
         // backgroundColor: const Color(0xff262e38),
         body: Center(
       child: Card(
-        shadowColor: Colors.grey[0],
+        shadowColor: AppColor.greyColor,
         elevation: 20,
         child: Container(
           color: AppColor.greyColor,
