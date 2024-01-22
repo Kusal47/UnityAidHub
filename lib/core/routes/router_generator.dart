@@ -7,11 +7,11 @@ import '../../view/pages/view_Pages/add_post.dart';
 import '../../view/pages/view_Pages/ads_management.dart';
 import '../../view/pages/view_Pages/blog_section.dart';
 import '../../view/pages/view_Pages/category.dart';
-import '../../view/pages/view_Pages/comments_crud.dart';
 import '../../view/pages/view_Pages/pages_section.dart';
 import '../../view/pages/view_Pages/post_verification.dart';
-import '../../view/pages/view_Pages/roles_management.dart';
 import '../../view/pages/view_Pages/user_management.dart';
+// import '../../view/pages/view_Pages/roles_management.dart';
+// import '../../view/pages/view_Pages/comments_crud.dart';
 
   Widget? generateRoutes(RouteSettings settings) {
      final uri = Uri.parse(settings.name!);
@@ -25,8 +25,8 @@ import '../../view/pages/view_Pages/user_management.dart';
       case RouteName.usermanagement:
         return  const UserManagement();
 
-      case RouteName.rolesmanagement:
-        return  const RolesManagement();
+      // case RouteName.rolesmanagement:
+      //   return  const RolesManagement();
 
       case RouteName.postverify:
         return  const PostVerification();
@@ -40,8 +40,8 @@ import '../../view/pages/view_Pages/user_management.dart';
       case RouteName.category:
         return  const CategoryPage();
 
-      case RouteName.comments:
-        return  const CommentCRUD();
+      // case RouteName.comments:
+      //   return  const CommentCRUD();
 
       case RouteName.pagesection:
         return  const PagesSection();

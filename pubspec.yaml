@@ -20,7 +20,7 @@ dependencies:
   path: ^1.8.3
   get_it: ^7.6.4
   logger: ^2.0.2+1
-  cherry_toast: ^1.6.4
+  cherry_toast: ^1.8.0
   intl: ^0.18.1
   dio: ^5.3.3
   flutter_easyloading: ^3.0.5
@@ -40,6 +40,7 @@ dependencies:
   window_manager: ^0.3.7
   country_picker: ^2.0.23
   file_picker: ^6.1.1
+  connectivity: ^3.0.6
  
 dev_dependencies:
   flutter_test:

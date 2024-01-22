@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
 import '../core/const/app_string.dart';
 import '../core/theme/app_color.dart';
 import '../utils/Helper Funtions/helper_functions.dart';

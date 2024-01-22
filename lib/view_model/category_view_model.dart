@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:unity_admin/core/routes/routes_name.dart';
-import '../utils/custom_notification_bar.dart';
-import '../utils/dialogs.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final TextEditingController categoryController = TextEditingController();
 
+
+
+void reset() {
+    categoryController.clear();
+   
+  }
   Future<void> addCategory(BuildContext context) async {
     try {} catch (e) {}
 
