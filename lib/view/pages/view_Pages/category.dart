@@ -6,6 +6,7 @@ import '../../../core/routes/routes_name.dart';
 import '../../../resources/texfields_pages.dart';
 import '../../../utils/button_fields.dart';
 import '../../../utils/text_design.dart';
+import '../../../utils/toast_utils.dart';
 import '../AdminScaffold/admin_scaffold_page.dart';
 
 class Category {
@@ -71,7 +72,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ? editingController
                                 : viewModel.categoryController,
                             hinttext: "Category Name",
-                            labeltext: "Category Name",
+                            labeltext: "Category",
                           ),
                           const SizedBox(height: 30),
                           ButtonFields(
@@ -108,7 +109,10 @@ class _CategoryPageState extends State<CategoryPage> {
 
                                   viewModel.addCategory(context);
                                 }
-                              }
+                              }else {
+                            ToastUtils().showCherryToast(
+                                context, 'Please upload documnts', true);
+                          }
                             },
                             txtColor: AppColor.whiteColor,
                             text:

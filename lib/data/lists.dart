@@ -29,3 +29,15 @@ List<String> categoryList = [
 
 
 ];
+ final List list =  [
+    'New user was added.',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+    'Rs.1000 donation was done through fonepay for health category',
+  ];

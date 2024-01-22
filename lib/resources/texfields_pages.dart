@@ -59,7 +59,7 @@ class CustomFields extends StatelessWidget {
               return null;
             }
             if (controller.text.isEmpty) {
-              return 'Field can\'t be Empty.';
+              return '$labeltext can\'t be Empty.';
             }
             return null;
           },
@@ -84,11 +84,10 @@ class CustomFields extends StatelessWidget {
                       ? BorderRadius.circular(10)
                       : BorderRadius.circular(0)),
               hintText: hinttext,
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 fontSize: 14,
                 height: 1,
                 fontWeight: FontWeight.w400,
-                color: AppColor.secondaryColor,
               ),
               hintStyle: TextStyle(
                 fontSize: 14,
@@ -96,7 +95,7 @@ class CustomFields extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 color: AppColor.darkColor,
               ),
-              labelText: labeltext),
+              labelText: labeltext??''),
         ),
       ],
     );

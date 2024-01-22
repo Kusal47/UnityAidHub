@@ -1,11 +1,8 @@
-import 'dart:io';
-
-import 'package:desktop_window/desktop_window.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:unity_admin/locator.dart';
+import 'package:unity_admin/view_model/blog_section_view_model.dart';
 import 'package:unity_admin/view_model/category_view_model.dart';
+import 'package:unity_admin/view_model/page_section_view_Model.dart';
 import 'core/routes/router_generator.dart';
 import 'core/routes/routes_name.dart';
 import 'core/theme/app_color.dart';
@@ -13,10 +10,12 @@ import 'view_model/add_post_view_model.dart';
 import 'view_model/login_signup_view_model.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -35,6 +34,10 @@ class _MyAppState extends State<MyApp> {
             create: (_) => CategoryViewModel()),
         ChangeNotifierProvider<AddPostViewModel>(
             create: (_) => AddPostViewModel()),
+        ChangeNotifierProvider<PageSectionViewModel>(
+            create: (_) => PageSectionViewModel()),
+        ChangeNotifierProvider<BlogSectionViewModel>(
+            create: (_) => BlogSectionViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -57,24 +60,24 @@ class _MyAppState extends State<MyApp> {
           iconTheme: const IconThemeData().copyWith(color: AppColor.darkColor),
           fontFamily: 'Montserrat',
           textTheme: TextTheme(
-            headline2: TextStyle(
+            displayMedium: TextStyle(
               color: AppColor.darkColor,
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
             ),
-            headline4: TextStyle(
+            headlineMedium: TextStyle(
               fontSize: 12.0,
               color: AppColor.darkColor,
               fontWeight: FontWeight.w500,
               letterSpacing: 2.0,
             ),
-            bodyText1: TextStyle(
+            bodyLarge: TextStyle(
               color: AppColor.darkColor,
               fontSize: 14.0,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.0,
             ),
-            bodyText2: TextStyle(
+            bodyMedium: TextStyle(
               color: AppColor.darkColor,
               letterSpacing: 1.0,
             ),
@@ -100,3 +103,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
