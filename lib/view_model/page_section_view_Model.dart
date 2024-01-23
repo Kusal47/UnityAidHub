@@ -63,8 +63,8 @@ class PageSectionViewModel extends ChangeNotifier {
       if (fileBytesList.isNotEmpty && fileNamesList.isNotEmpty) {
         details.add({
           'pageTitle': pstitlecontroller,
-          'richText': psquillcontroller,
-          'document': fileBytesList,
+          'pagesRichText': psquillcontroller,
+          'pagesDocument': fileBytesList,
         });
 
         showDialogBox(

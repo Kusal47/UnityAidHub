@@ -141,13 +141,13 @@ class AddPostViewModel extends ChangeNotifier {
     try {
       if (isChecked == true) {
         details.add({
-          'category': selectedCategory,
-          'country': selectedCountry,
-          'totalFund': fundController,
-          'beneficiary': selectedBenificiary,
-          'campaignTitle': titlecontroller,
-          'richText': quillcontroller,
-          'document': fileBytesList,
+          'postcategory': selectedCategory,
+          'postcountry': selectedCountry,
+          'posttargetFund': fundController,
+          'postbeneficiary': selectedBenificiary,
+          'postTitle': titlecontroller,
+          'postRichText': quillcontroller,
+          'postDocument': fileBytesList,
           'isChecked': isChecked,
         });
         showDialogBox(
