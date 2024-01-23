@@ -71,10 +71,10 @@ class _PagesSectionState extends State<PagesSection> {
                         ),
                       );
                     default:
-                      return Container(); // Handle additional pages if needed
+                      return Container();
                   }
                 },
-                itemCount: 3, // Number of pages
+                itemCount: 3, 
               ),
             ),
           ),
