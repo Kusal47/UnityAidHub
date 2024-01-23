@@ -78,10 +78,10 @@ class BlogSectionViewModel extends ChangeNotifier {
     try {
       if (formKeys.currentState!.validate() && selectedCategory != null) {
         details.add({
-          'campaignTitle': bstitlecontroller,
-          'richText': bsquillcontroller,
-          'document': fileBytesList,
-          'author': authorcontroller,
+          'blogTitle': bstitlecontroller,
+          'blogRichText': bsquillcontroller,
+          'blogDocument': fileBytesList,
+          'blogAuthor': authorcontroller,
         });
         showDialogBox(
           context,
