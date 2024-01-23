@@ -118,10 +118,10 @@ class _AddPostState extends State<AddPost> {
                         ),
                       );
                     default:
-                      return Container(); // Handle additional pages if needed
+                      return Container(); 
                   }
                 },
-                itemCount: 5, // Number of pages
+                itemCount: 5, 
               ),
             ),
           ),
