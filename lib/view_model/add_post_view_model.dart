@@ -6,7 +6,6 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:unity_admin/core/theme/app_color.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:unity_admin/utils/dialog_box.dart';
-
 import '../core/routes/routes_name.dart';
 import '../utils/toast_utils.dart';
 
@@ -17,13 +16,15 @@ class AddPostViewModel extends ChangeNotifier {
   Logger logger = Logger();
   bool isChecked = false;
   bool isNotChecked = false;
-  // bool get _isChecked => isChecked;
   String selectedBenificiary = '';
   String selectedCountry = '';
-  var selectedColor = AppColor.borderColor;
-  // String get _selectedCountry => selectedCountry;
-  var selectedCategory;
 
+  var selectedColor = AppColor.borderColor;
+  var selectedCategory;
+  var selectedCurrency;
+  var postType;
+
+  String preCurrency = 'Rs.';
   final List<Map> details = [];
   List<Uint8List> fileBytesList = [];
   List<String> fileNamesList = [];
@@ -78,13 +79,11 @@ class AddPostViewModel extends ChangeNotifier {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-      }else if(selectedCategory==null) {
-        ToastUtils()
-            .showCherryToast(context, 'Please select Category ', true);
-      }else if(selectedCountry=='') {
-        ToastUtils()
-            .showCherryToast(context, 'Please select Country ', true);
-      }else {
+      } else if (selectedCategory == null) {
+        ToastUtils().showCherryToast(context, 'Please select Category ', true);
+      } else if (selectedCountry == '') {
+        ToastUtils().showCherryToast(context, 'Please select Country ', true);
+      } else {
         ToastUtils()
             .showCherryToast(context, 'Please mention target fund ', true);
       }
@@ -98,7 +97,7 @@ class AddPostViewModel extends ChangeNotifier {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-      }else {
+      } else {
         ToastUtils()
             .showCherryToast(context, 'Please select beneficiary ', true);
       }
@@ -127,10 +126,10 @@ class AddPostViewModel extends ChangeNotifier {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-      }else if(quillcontroller.document.isEmpty()) {
-        ToastUtils()
-            .showCherryToast(context, 'Please give description about your campaign ', true);
-      }else {
+      } else if (quillcontroller.document.isEmpty()) {
+        ToastUtils().showCherryToast(
+            context, 'Please give description about your campaign ', true);
+      } else {
         ToastUtils()
             .showCherryToast(context, 'Please give suitable title ', true);
       }
@@ -143,7 +142,7 @@ class AddPostViewModel extends ChangeNotifier {
         details.add({
           'postcategory': selectedCategory,
           'postcountry': selectedCountry,
-          'posttargetFund': fundController,
+          'posttargetFund': preCurrency + fundController.text,
           'postbeneficiary': selectedBenificiary,
           'postTitle': titlecontroller,
           'postRichText': quillcontroller,
@@ -170,4 +169,22 @@ class AddPostViewModel extends ChangeNotifier {
     } catch (e) {}
   }
 
+  Future<void> currencySymbol(BuildContext context) async {
+    try {
+      switch (selectedCurrency) {
+        case 'INR':
+          preCurrency = '₹';
+        case 'USD':
+          preCurrency = '\$';
+        case 'EUR':
+          preCurrency = '€';
+        case 'GBP':
+          preCurrency = '£';
+        case 'NPR':
+          preCurrency = 'Rs.';
+        default:
+          preCurrency = 'Rs';
+      }
+    } catch (e) {}
+  }
 }
