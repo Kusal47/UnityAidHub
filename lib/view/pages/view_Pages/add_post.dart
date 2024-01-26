@@ -25,7 +25,6 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   var borderColor = AppColor.borderColor;
   var width = 1.0;
-
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<AddPostViewModel>(context);
@@ -36,7 +35,7 @@ class _AddPostState extends State<AddPost> {
         child: Center(
           child: SizedBox(
             height: size.height * 0.9,
-            width:600,
+            width: 600,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: PageView.builder(
@@ -52,6 +51,10 @@ class _AddPostState extends State<AddPost> {
                         nextPage: () {
                           viewModel.categoryAndFunding(
                               context, viewModel.formKeys[0]);
+                          print(
+                            viewModel.preCurrency +
+                                viewModel.fundController.text,
+                          );
                         },
                         previousPage: () => {},
                       );
@@ -84,6 +87,7 @@ class _AddPostState extends State<AddPost> {
                         quillC: viewModel.quillcontroller,
                         controller: viewModel.titlecontroller,
                         titleType: 'Campaign',
+                        viewModel: viewModel,
                       );
                     case 3:
                       return DocumentUploads(
@@ -118,10 +122,10 @@ class _AddPostState extends State<AddPost> {
                         ),
                       );
                     default:
-                      return Container(); 
+                      return Container();
                   }
                 },
-                itemCount: 5, 
+                itemCount: 5,
               ),
             ),
           ),
@@ -138,7 +142,6 @@ class _AddPostState extends State<AddPost> {
     required VoidCallback previousPage,
   }) {
     Size size = MediaQuery.of(context).size;
-
     return SingleChildScrollView(
       child: Form(
         key: formKey,
@@ -162,7 +165,7 @@ class _AddPostState extends State<AddPost> {
               endIndent: size.width * 0.01,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -202,7 +205,7 @@ class _AddPostState extends State<AddPost> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -268,15 +271,48 @@ class _AddPostState extends State<AddPost> {
                 ],
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.all( 8.0),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: TextDesign(
+            //           text: 'Select a Post Type',
+            //           fontweight: FontWeight.w700,
+            //           fontsize: 18,
+            //           color: AppColor.darkColor,
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            //         child: CustomDropdown(
+            //           // hintText: '',
+            //           onChanged: (value) {
+            //             setState(() {
+            //               viewModel.postType = value!;
+            //               print(viewModel.postType);
+            //             });
+            //           },
+            //           data: postType,
+            //           fontSize: 12,
+            //           values: postType.first,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+          
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextDesign(
-                      text: 'Target Funding (Rs.)',
+                      text: 'Target Funding',
                       fontweight: FontWeight.w700,
                       fontsize: 18,
                       color: AppColor.darkColor,
@@ -287,6 +323,15 @@ class _AddPostState extends State<AddPost> {
                     child: CustomFields(
                       controller: viewModel.fundController,
                       isNumber: true,
+                      hinttext: '0.00',
+                      onChanged: (value) {
+                        setState(() {
+                          viewModel.selectedCurrency = value;
+                        });
+                        viewModel.currencySymbol(context);
+                      },
+                      selectedCurrency: viewModel.preCurrency,
+                      // labeltext: 'Enter Required Amount',
                     ),
                   ),
                   Padding(
@@ -331,8 +376,7 @@ class _AddPostState extends State<AddPost> {
             fontweight: FontWeight.w700,
             fontsize: 18,
             color: AppColor.darkColor,
-                            textAlign: TextAlign.center,
-
+            textAlign: TextAlign.center,
           ),
         ),
         Divider(
@@ -415,8 +459,7 @@ class _AddPostState extends State<AddPost> {
               fontweight: FontWeight.w700,
               fontsize: 18,
               color: AppColor.darkColor,
-                              textAlign: TextAlign.center,
-
+              textAlign: TextAlign.center,
             ),
           ),
           Divider(

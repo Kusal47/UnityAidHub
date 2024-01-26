@@ -40,6 +40,7 @@ dependencies:
   window_manager: ^0.3.7
   country_picker: ^2.0.23
   file_picker: ^6.1.1
+  
  
 dev_dependencies:
   flutter_test:

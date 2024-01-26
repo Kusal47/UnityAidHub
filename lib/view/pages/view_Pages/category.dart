@@ -57,10 +57,13 @@ class _CategoryPageState extends State<CategoryPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const TextDesign(
-                              text: 'Category Name',
-                              fontweight: FontWeight.w700,
-                              fontsize: 18,
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child: TextDesign(
+                                text: 'Category Name',
+                                fontweight: FontWeight.w700,
+                                fontsize: 18,
+                              ),
                             ),
                             CustomFields(
                               controller: viewModel.categoryController,
