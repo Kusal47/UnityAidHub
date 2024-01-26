@@ -12,6 +12,7 @@ class CustomDropdown extends StatelessWidget {
     this.onChanged,
     this.icon,
     this.number = false,
+    this.currency = false,
   });
   final double? fontSize;
   final String? hintText;
@@ -20,6 +21,7 @@ class CustomDropdown extends StatelessWidget {
   final String? values;
   final IconData? icon;
   final bool number;
+  final bool currency;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class CustomDropdown extends StatelessWidget {
                 child: Text(
                   e,
                   style: TextStyle(
-                    fontSize:number? fontSize:16,
+                    fontSize: number ? fontSize : 16,
                   ),
                   overflow: TextOverflow.visible,
                 ),
@@ -44,18 +46,23 @@ class CustomDropdown extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white38.withOpacity(0.5),
-        contentPadding: const EdgeInsets.symmetric(vertical: 2,horizontal: 12),
+        contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
         hintText: hintText ?? 'Select Items',
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColor.secondaryColor, width: 2.0),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.borderColor,
-            width: 2.0,
-          ),
-        ),
-        focusColor: AppColor.primaryColor,
+        focusedBorder: currency
+            ? null
+            : OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: AppColor.secondaryColor, width: 2.0),
+              ),
+        border: currency
+            ? InputBorder.none
+            : OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: currency ? AppColor.whiteColor : AppColor.borderColor,
+                  width: 2.0,
+                ),
+              ),
+        focusColor: currency ? null : AppColor.primaryColor,
       ),
     );
   }
