@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:unity_admin/view_model/blog_section_view_model.dart';
 import 'package:unity_admin/view_model/category_view_model.dart';
 import 'package:unity_admin/view_model/page_section_view_Model.dart';
+import 'package:unity_admin/view_model/user_manage_view_model.dart';
 import 'core/routes/router_generator.dart';
 import 'core/routes/routes_name.dart';
 import 'core/theme/app_color.dart';
@@ -38,6 +39,8 @@ class _MyAppState extends State<MyApp> {
             create: (_) => PageSectionViewModel()),
         ChangeNotifierProvider<BlogSectionViewModel>(
             create: (_) => BlogSectionViewModel()),
+        ChangeNotifierProvider<UserViewModel>(
+            create: (_) => UserViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
