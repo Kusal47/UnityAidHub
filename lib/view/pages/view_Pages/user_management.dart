@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:unity_admin/core/theme/app_color.dart';
 import 'package:unity_admin/view/pages/AdminScaffold/admin_scaffold_page.dart';
-
+import 'package:unity_admin/view_model/user_manage_view_model.dart';
+import '../../../Models/user_model.dart';
 import '../../../core/routes/routes_name.dart';
 import '../../../data/lists.dart';
 import '../../../resources/custom_dropdown.dart';
@@ -19,10 +20,22 @@ class UserManagement extends StatefulWidget {
 
 class _UserManagementState extends State<UserManagement> {
   @override
+  void initState() {
+    super.initState();
+    addPost();
+  }
+
+  List<User> userList = [];
+  void addPost() {
+    for (var post in userLists) {
+      userList.add((post));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    var selectedValue;
-    TextEditingController searchC = TextEditingController();
+    final viewModel = Provider.of<UserViewModel>(context);
     return MyScaffold(
       route: RouteName.usermanagement,
       body: SizedBox(
@@ -61,12 +74,12 @@ class _UserManagementState extends State<UserManagement> {
                                 onChanged: (value) {
                                   // Update the selected value when an item is chosen
                                   setState(() {
-                                    selectedValue = value!;
+                                    viewModel.selectedValue = value!;
                                   });
                                 },
                                 data: items,
                                 fontSize: 12,
-                                values: selectedValue,
+                                values: viewModel.selectedValue,
                               ),
                             ),
                           ],
@@ -95,9 +108,22 @@ class _UserManagementState extends State<UserManagement> {
                       children: [
                         Expanded(
                           child: CustomFields(
-                            controller: searchC,
-                            hinttext: 'Search',
+                            controller: viewModel.searchC,
+                            hinttext: 'Enter user name...',
                             isSmall: true,
+                            labeltext: 'Search User',
+                            onPressed: () {
+                              viewModel.searchUser(
+                                  viewModel.searchC.text, userList);
+                            },
+                            onClose: () {
+                              setState(() {
+                                viewModel.searchC.clear();
+                                viewModel.searchResult.clear();
+                              });
+                            },
+                            isNotEmpty:
+                                viewModel.searchC.text.isEmpty ? false : true,
                           ),
                         ),
                       ],
@@ -105,17 +131,22 @@ class _UserManagementState extends State<UserManagement> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.primaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Add Category',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: AppColor.whiteColor),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, RouteName.category);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColor.primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Add Category',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: AppColor.whiteColor),
+                          ),
                         ),
                       ),
                     ),
@@ -131,33 +162,33 @@ class _UserManagementState extends State<UserManagement> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TitleText(text: "ID", flex: 1),
-                    Expanded(
+                    const Expanded(
                       flex: 2,
                       child: Row(
                         children: [
-                          const TitleText(
+                          TitleText(
                             text: "Category",
                           ),
-                          Icon(
-                            Icons.unfold_more,
-                            size: 25,
-                            color: AppColor.textColor,
-                          ),
+                          // Icon(
+                          //   Icons.unfold_more,
+                          //   size: 25,
+                          //   color: AppColor.textColor,
+                          // ),
                         ],
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 2,
                       child: Row(
                         children: [
-                          const TitleText(
+                          TitleText(
                             text: "Customer",
                           ),
-                          Icon(
-                            Icons.unfold_more,
-                            size: 25,
-                            color: AppColor.textColor,
-                          ),
+                          // Icon(
+                          //   Icons.unfold_more,
+                          //   size: 25,
+                          //   color: AppColor.textColor,
+                          // ),
                         ],
                       ),
                     ),
@@ -197,230 +228,366 @@ class _UserManagementState extends State<UserManagement> {
               ),
             ),
             Expanded(
-              child: ListView(
-                // physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                  10,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 1.05),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "${index + 1}.",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: InkWell(
-                            onTap: () {},
-                            child: const Text(
-                              'Shyam Bahadur',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(),
+              child: userList.isEmpty
+                  ? Container(
+                      padding: const EdgeInsets.all(100.0),
+                      child: Text('No User Found'),
+                    )
+                  : viewModel.searchResult.isEmpty
+                      ? ListView(
+                          // physics: const NeverScrollableScrollPhysics(),
+                          children: List.generate(
+                            userList.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 1.05),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      "${index + 1}.",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      userList[index].category,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      userList[index].username,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      userList[index].date,
+                                      // DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      userList[index].amount,
+                                      // '\$1000',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      userList[index].paymentMethod,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColor.buttonColor1,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          userList[index].status,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: AppColor.buttontxtColor1),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0),
+                                      child: Row(
+                                        // mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: IconButton(
+                                              icon:
+                                                  const Icon(Icons.edit_square),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+
+                                          // const Icon(Icons.remove_red_eye),
+                                          Expanded(
+                                            child: IconButton(
+                                              icon: Icon(
+                                                Icons.delete,
+                                                color: AppColor.redColor,
+                                              ),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            'Delete User ${userList[index].username}'),
+                                                        content: Text(
+                                                            "Are you sure to delete this user"),
+                                                        actions: [
+                                                          OutlinedButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                userList.remove(
+                                                                    userList[
+                                                                        index]);
+                                                              });
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Text('OK'),
+                                                          )
+                                                        ],
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
+                                              icon: Icon(
+                                                Icons.more_vert_rounded,
+                                                color: AppColor.primaryColor,
+                                              ),
+                                              onPressed: () {
+                                                // selectedPostIndex =
+                                                //     userList[index].userId;
+
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return AlertDialog(
+                                                        title: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                'User Details : ${userList[index].userId}'),
+                                                            Text(
+                                                                'User Details : ${userList[index].username}'),
+                                                            Text(
+                                                                'User Details : ${userList[index].category}'),
+                                                            Text(
+                                                                'User Details : ${userList[index].date}'),
+                                                            Text(
+                                                                'User Details : ${userList[index].paymentMethod}'),
+                                                            Text(
+                                                                'User Details : ${userList[index].status}'),
+                                                            Text(
+                                                                'User Details : ${userList[index].amount}'),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const Expanded(
-                          flex: 2,
-                          child: Text(
-                            'Health',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            DateFormat('yyyy-MM-dd').format(DateTime.now()),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const Expanded(
-                          flex: 2,
-                          child: Text(
-                            '\$1000',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const Expanded(
-                          flex: 2,
-                          child: Text(
-                            'Fonepay',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: AppColor.buttonColor1,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Processing',
-                                textAlign: TextAlign.center,
-                                style:
-                                    TextStyle(color: AppColor.buttontxtColor1),
+                        )
+                      : ListView(
+                          // physics: const NeverScrollableScrollPhysics(),
+                          children: List.generate(
+                            viewModel.searchResult.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 1.05),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      "${index + 1}.",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      viewModel.searchResult[index].category,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      viewModel.searchResult[index].username,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      viewModel.searchResult[index].date,
+                                      // DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      viewModel.searchResult[index].amount,
+                                      // '\$1000',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      viewModel
+                                          .searchResult[index].paymentMethod,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColor.buttonColor1,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          viewModel.searchResult[index].status,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: AppColor.buttontxtColor1),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0),
+                                      child: Row(
+                                        // mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: IconButton(
+                                              icon:
+                                                  const Icon(Icons.edit_square),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+
+                                          // const Icon(Icons.remove_red_eye),
+                                          Expanded(
+                                            child: IconButton(
+                                              icon: Icon(
+                                                Icons.delete,
+                                                color: AppColor.redColor,
+                                              ),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            'Delete User ${viewModel.searchResult[index].username}'),
+                                                        content: Text(
+                                                            "Are you sure to delete this user"),
+                                                        actions: [
+                                                          OutlinedButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                userList.remove(
+                                                                    viewModel
+                                                                            .searchResult[
+                                                                        index]);
+                                                              });
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Text('OK'),
+                                                          )
+                                                        ],
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
+                                              icon: Icon(
+                                                Icons.more_vert_rounded,
+                                                color: AppColor.primaryColor,
+                                              ),
+                                              onPressed: () {
+                                                // selectedPostIndex =
+                                                //     userList[index].userId;
+
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return AlertDialog(
+                                                        title: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].userId}'),
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].username}'),
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].category}'),
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].date}'),
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].paymentMethod}'),
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].status}'),
+                                                            Text(
+                                                                'User Details : ${viewModel.searchResult[index].amount}'),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),
                         ),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 15.0),
-                            child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: IconButton(
-                                    icon: const Icon(Icons.edit_square),
-                                    onPressed: () {},
-                                  ),
-                                ),
-
-                                // const Icon(Icons.remove_red_eye),
-                                Expanded(
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: AppColor.redColor,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                ),
-                                Expanded(
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.more_vert_rounded,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return const AlertDialog(
-                                              title: Text('User Details'),
-                                            );
-                                          });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
       ),
-
-      // SizedBox(
-      //   child: Align(
-      //     alignment: Alignment.centerLeft,
-      //     child: Padding(
-      //       padding: const EdgeInsets.only(top:30.0,left:30.0,bottom:10.0),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: [
-      //           const TextDesign(
-      //             text: 'User Management',
-      //             fontweight: FontWeight.w700,
-      //             fontsize: 24,
-      //           ),
-      //           const SizedBox(
-      //             height: 10,
-      //           ),
-      //           SizedBox(
-      //             child: SingleChildScrollView(
-      //               scrollDirection: Axis.horizontal,
-      //               child: DataTable(
-      //                 border: TableBorder.all(color: Colors.black, width: 2),
-      //                 headingRowColor: MaterialStateColor.resolveWith(
-      //                     (states) => AppColor.secondaryColor),
-      //                 columns: const [
-      //                   DataColumn(
-      //                       label: TextDesign(
-      //                         text: 'S.N.',
-      //                         fontweight: FontWeight.w600,
-      //                         fontsize: 16,
-      //                       ),
-      //                       numeric: true),
-      //                   DataColumn(
-      //                       label: TextDesign(
-      //                     text: 'Name',
-      //                     fontweight: FontWeight.w600,
-      //                     fontsize: 16,
-      //                   )),
-      //                   DataColumn(
-      //                       label: TextDesign(
-      //                     text: 'Email',
-      //                     fontweight: FontWeight.w600,
-      //                     fontsize: 16,
-      //                   )),
-      //                   DataColumn(
-      //                       label: TextDesign(
-      //                     text: 'Password',
-      //                     fontweight: FontWeight.w600,
-      //                     fontsize: 16,
-      //                   )),
-      //                   DataColumn(
-      //                       label: TextDesign(
-      //                     text: 'Actions',
-      //                     fontweight: FontWeight.w600,
-      //                     fontsize: 16,
-      //                   )),
-      //                 ],
-      //                 rows: List.generate(
-      //                   userList.length,
-      //                   (index) => DataRow(cells: [
-      //                     DataCell(Text('${index + 1.toInt()}')),
-      //                     DataCell(Text(userList[index].name)),
-      //                     DataCell(Text(userList[index].email)),
-      //                     DataCell(Text(userList[index].password)),
-      //                     DataCell(Row(
-      //                       children: [
-      //                         IconButton(
-      //                           icon: const Icon(
-      //                               Icons.block), // Replace with disable icon
-      //                           onPressed: () {
-      //                             // Implement disable user logic
-      //                             // For example: userList[index].disabled = true;
-      //                           },
-      //                         ),
-      //                         IconButton(
-      //                           icon: Icon(
-      //                             Icons.delete,
-      //                             color: AppColor.redColor,
-      //                           ),
-      //                           onPressed: () {
-      //                             // Implement delete user logic
-      //                             // For example: userList.removeAt(index);
-      //                           },
-      //                         ),
-      //                       ],
-      //                     )),
-      //                   ]),
-      //                 ),
-      //               ),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
