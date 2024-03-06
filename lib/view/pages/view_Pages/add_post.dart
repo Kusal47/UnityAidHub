@@ -11,7 +11,6 @@ import 'package:unity_admin/view_model/category_view_model.dart';
 import 'package:unity_admin/view_model/login_signup_view_model.dart';
 import 'package:unity_admin/widgets/document_upload.dart';
 import '../../../resources/texfields_pages.dart';
-import '../../../utils/dialog_box.dart';
 import '../../../utils/text_design.dart';
 import '../../../view_model/add_post_view_model.dart';
 import '../../../widgets/title_richText_page.dart';

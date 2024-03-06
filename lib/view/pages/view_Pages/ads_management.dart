@@ -284,46 +284,5 @@ class _AdsManagementState extends State<AdsManagement> {
             ),
           ),
         ));
-
-    //  Center(
-    //   child: SizedBox(
-    //     width: size.width * 0.5,
-    //     child: Column(
-    //       children: [
-    //         Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: SizedBox(
-    //               child: Image.asset(
-    //             AssetsPath.landscapedarklogo,
-    //             width: 600,
-    //             height: 100,
-    //             fit: BoxFit.fill,
-    //           )),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: SizedBox(
-    //               child: Image.asset(
-    //             AssetsPath.landscapedarklogo,
-    //             width: 300,
-    //             height: 100,
-    //             fit: BoxFit.fill,
-    //           )),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Card(
-    //               elevation: 20,
-    //               child: Image.asset(
-    //                 AssetsPath.landscapedarklogo,
-    //                 width: 400,
-    //                 height: 400,
-    //                 fit: BoxFit.fill,
-    //               )),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // )
   }
 }

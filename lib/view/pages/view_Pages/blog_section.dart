@@ -6,7 +6,6 @@ import 'package:unity_admin/view_model/blog_section_view_model.dart';
 import 'package:unity_admin/widgets/title_richText_page.dart';
 import '../../../Models/category_model.dart';
 import '../../../core/theme/app_color.dart';
-import '../../../data/lists.dart';
 import '../../../resources/custom_dropdown.dart';
 import '../../../resources/texfields_pages.dart';
 import '../../../utils/dialog_box.dart';

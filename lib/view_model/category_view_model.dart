@@ -1,23 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:unity_admin/utils/Helper_Funtions/formdata_to_json.dart';
-
 import '../Models/category_model.dart';
 import '../core/const/base_url.dart';
-import '../core/routes/routes_name.dart';
 import '../utils/cloudinary.dart';
 import '../utils/custom_notification_bar.dart';
-import '../utils/dialog_box.dart';
-import '../utils/toast_utils.dart';
-import '../view/pages/view_Pages/display.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final TextEditingController categoryController = TextEditingController();

@@ -32,7 +32,7 @@ class _PostVerificationState extends State<PostVerification> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _futurePosts = Provider.of<PostVerificationViewModel>(context).fetchPostsFromApi(
-        context); // Initialize the future to fetch posts if it's not already initialized
+        context); 
     _futurePosts.then((posts) {
       addPost(posts);
     });
@@ -43,7 +43,6 @@ class _PostVerificationState extends State<PostVerification> {
   @override
   void initState() {
     super.initState();
-    // Show error message after 10 seconds
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         showLoad = false;
@@ -57,22 +56,6 @@ class _PostVerificationState extends State<PostVerification> {
       _post.add((post));
     }
   }
-
-  // List<Uint8List> imageBytes = [];
-
-  // Widget buildTile(
-  //   Post post,
-  //   int index,
-  // ) {
-  // List<Uint8List> imageUint8List = post.image.map((imageString) {
-  //   // Convert each image string to Uint8List
-  //   String base64String = imageString;
-  //   int missingPadding = (4 - base64String.length % 4) % 4;
-  //   base64String += '=' * missingPadding;
-  //   Uint8List bytes = Uint8List.fromList(base64.decode(base64String));
-  //   return bytes;
-  // }).toList();
-  // print(index);
   Widget buildTile(
     Post post,
     int index,
@@ -220,7 +203,7 @@ class _PostVerificationState extends State<PostVerification> {
                               itemBuilder: (BuildContext context, int index, int realIndex) {
                                 final imageUrl = selectedPost.image[index];
                                 return imageUrl
-                                        .startsWith('http') // Check if the image is a network image
+                                        .startsWith('http') 
                                     ? Image.network(
                                         imageUrl,
                                         fit: BoxFit.fill,
@@ -229,7 +212,7 @@ class _PostVerificationState extends State<PostVerification> {
                                     : Image.memory(
                                         base64.decode(imageUrl
                                             .split(',')
-                                            .last), // Convert base64 string to Uint8List
+                                            .last), 
                                         fit: BoxFit.fill,
                                         filterQuality: FilterQuality.high,
                                       );
