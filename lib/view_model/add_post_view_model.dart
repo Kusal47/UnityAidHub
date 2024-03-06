@@ -98,6 +98,7 @@ class AddPostViewModel extends ChangeNotifier {
           "image": imageUrls,
           "documents": documentUrls,
         });
+        
 
         Map<String, dynamic> jsonData = TextAndImageConversion().formDataToJson(postData);
         String jsonString = jsonEncode(jsonData);

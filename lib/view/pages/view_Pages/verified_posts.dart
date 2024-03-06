@@ -31,7 +31,7 @@ class _VerifiedPostsState extends State<VerifiedPosts> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _futurePosts = Provider.of<PostVerificationViewModel>(context).fetchVerifiedPosts(
-        context); // Initialize the future to fetch posts if it's not already initialized
+        context);
     _futurePosts.then((posts) {
       addPost(posts);
     });
@@ -42,7 +42,6 @@ class _VerifiedPostsState extends State<VerifiedPosts> {
   @override
   void initState() {
     super.initState();
-    // Show error message after 10 seconds
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         showLoad = false;
@@ -56,8 +55,6 @@ class _VerifiedPostsState extends State<VerifiedPosts> {
       _post.add((post));
     }
   }
-
-  // List<Uint8List> imageBytes = [];
 
  Widget buildTile(
   Post post,
@@ -208,7 +205,7 @@ class _VerifiedPostsState extends State<VerifiedPosts> {
                               itemBuilder: (BuildContext context, int index, int realIndex) {
                                 final imageUrl = selectedPost.image[index];
                                 return imageUrl
-                                        .startsWith('http') // Check if the image is a network image
+                                        .startsWith('http') 
                                     ? Image.network(
                                         imageUrl,
                                         fit: BoxFit.fill,
@@ -217,7 +214,7 @@ class _VerifiedPostsState extends State<VerifiedPosts> {
                                     : Image.memory(
                                         base64.decode(imageUrl
                                             .split(',')
-                                            .last), // Convert base64 string to Uint8List
+                                            .last),
                                         fit: BoxFit.fill,
                                         filterQuality: FilterQuality.high,
                                       );

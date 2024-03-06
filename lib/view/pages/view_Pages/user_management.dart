@@ -34,7 +34,6 @@ class _UserManagementState extends State<UserManagement> {
   @override
   void initState() {
     super.initState();
-    // Show error message after 10 seconds
     Future.delayed(const Duration(seconds: 10), () {
       setState(() {
         showError = true;
@@ -65,55 +64,7 @@ class _UserManagementState extends State<UserManagement> {
                             child: TextDesign(
                                 text: 'All Users', fontsize: 24, fontweight: FontWeight.w900),
                           ),
-                          // const Row(
-                          //   mainAxisAlignment: MainAxisAlignment.start,
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.all(8.0),
-                          //       child: TextDesign(
-                          //         text: 'Show',
-                          //         fontweight: FontWeight.w600,
-                          //         fontsize: 12,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     SizedBox(
-                          //       width: 68.7,
-                          //       height: 40,
-                          //       child: CustomDropdown(
-                          //         number: true,
-                          //         onChanged: (value) {
-                          //           // Update the selected value when an item is chosen
-                          //           setState(() {
-                          //             viewModel.selectedValue = value!;
-                          //           });
-                          //         },
-                          //         data: items,
-                          //         fontSize: 12,
-                          //         values: viewModel.selectedValue,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          // const Row(
-                          //   mainAxisAlignment: MainAxisAlignment.start,
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.all(8.0),
-                          //       child: TextDesign(
-                          //         text: 'entries',
-                          //         fontweight: FontWeight.w600,
-                          //         fontsize: 12,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                        ],
+                         ],
                       ),
                     ),
                     size.width < 900 ? const SizedBox() : const Expanded(child: SizedBox()),
@@ -131,11 +82,7 @@ class _UserManagementState extends State<UserManagement> {
                               onFieldSubmitted: (value) {
                                 setState(() {
                                   viewModel.searchUser(value!);
-                                  // if (value.isNotEmpty) {
-                                  //   viewModel.searchC.clear();
-                                  // } else {
-                                  //   viewModel.searchC.clear();
-                                  // }
+                                  
                                   search = true;
                                 });
 
@@ -145,7 +92,6 @@ class _UserManagementState extends State<UserManagement> {
                                 setState(() {
                                   viewModel.searchUser(viewModel.searchC.text);
                                   search = true;
-                                  // viewModel.searchC.clear();
                                 });
                               },
                               onClose: () {
@@ -205,11 +151,7 @@ class _UserManagementState extends State<UserManagement> {
                               TitleText(
                                 text: "Users",
                               ),
-                              // Icon(
-                              //   Icons.unfold_more,
-                              //   size: 25,
-                              //   color: AppColor.textColor,
-                              // ),
+                              
                             ],
                           ),
                         ),
@@ -230,11 +172,7 @@ class _UserManagementState extends State<UserManagement> {
                               TitleText(
                                 text: "Contact",
                               ),
-                              // Icon(
-                              //   Icons.unfold_more,
-                              //   size: 25,
-                              //   color: AppColor.textColor,
-                              // ),
+                             
                             ],
                           ),
                         ),

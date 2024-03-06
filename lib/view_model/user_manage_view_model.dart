@@ -84,7 +84,7 @@ class UserViewModel extends ChangeNotifier {
       });
       
       Map<String, dynamic> jsonData = TextAndImageConversion().formDataToJson(formData);
-      String jsonString = jsonEncode(jsonData);
+      // String jsonString = jsonEncode(jsonData);
       Response response = await dio.patch(
         '${ApiUrl.baseUrl}user/$userId',
         data: jsonData,
