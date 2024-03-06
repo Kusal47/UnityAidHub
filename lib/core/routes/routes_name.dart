@@ -4,6 +4,7 @@ class RouteName {
   static const shell = "/shell_screen";
 
   static const postverify = "post_verify";
+  static const verifedpost = "verifedpost";
   static const postadd = "add_post";
   static const usermanagement = "user_management";
   static const rolesmanagement = "/roles_management";

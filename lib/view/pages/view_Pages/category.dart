@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:unity_admin/core/theme/app_color.dart';
 import 'package:unity_admin/view_model/category_view_model.dart';
 import 'package:unity_admin/widgets/category_image_upload.dart';
+import '../../../Models/category_model.dart';
 import '../../../core/routes/routes_name.dart';
 import '../../../resources/texfields_pages.dart';
 import '../../../utils/button_fields.dart';
@@ -20,8 +21,6 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  List<String> categoryList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +52,12 @@ class _CategoryPageState extends State<CategoryPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: SizedBox(
                       child: Form(
-                        key: formKey,
+                        key: viewModel.formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: TextDesign(
-                                text: 'Category Name',
-                                fontweight: FontWeight.w700,
-                                fontsize: 18,
-                              ),
-                            ),
                             CustomFields(
+                              title: 'Category Name',
                               controller: viewModel.categoryController,
                               hinttext: "Enter Category Name",
                               labeltext: "Category",
@@ -90,18 +82,19 @@ class _CategoryPageState extends State<CategoryPage> {
                               ),
                             ),
                             CategoryImages(
+                              text: 'Dark',
                                 onTap: () {
                                   viewModel.pickFiles(context);
                                 },
                                 fileBytesList: viewModel.fileBytesList,
                                 fileNamesList: viewModel.fileNamesList),
-                            CategoryImages(
+                            CategoryImages(text: 'Light',
                                 onTap: () {
                                   viewModel.pickFiles2(context);
                                 },
                                 fileBytesList: viewModel.fileBytesList2,
                                 fileNamesList: viewModel.fileNamesList2),
-                            CategoryImages(
+                            CategoryImages(text: 'Primary',
                                 onTap: () {
                                   viewModel.pickFiles3(context);
                                 },
@@ -119,7 +112,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       ),
                     ),
                   ),
-                ],
+                  ],
               ),
             ),
           ),

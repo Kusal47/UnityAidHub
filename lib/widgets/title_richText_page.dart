@@ -11,23 +11,19 @@ import 'quil_rich_text.dart';
 
 class CommonBuildPages extends StatefulWidget {
   const CommonBuildPages({
-    super.key,
     required this.formKey,
     required this.nextPage,
     required this.previousPage,
     this.titleType,
-    required this.quillC,
+    this.desccontroller,
+    this.quillC,
     required this.controller,
     this.addPost = false,
     this.viewModel,
-    // this.title,
-    // this.subtitle,
-    // this.description,
-    // this.subitleNote,
-    // this.descriptionNote
-  });
+  }) ;
 
-  final QuillController quillC;
+  final QuillController? quillC;
+  final TextEditingController? desccontroller;
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
   final VoidCallback nextPage;
@@ -35,10 +31,7 @@ class CommonBuildPages extends StatefulWidget {
   final String? titleType;
   final bool addPost;
   final AddPostViewModel? viewModel;
-  // final String? subtitle;
-  // final String? subitleNote;
-  // final String? description;
-  // final String? descriptionNote;
+
   @override
   State<CommonBuildPages> createState() => _CommonBuildPagesState();
 }
@@ -72,212 +65,136 @@ class _CommonBuildPagesState extends State<CommonBuildPages> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: size.width < 600
-                  ? Column(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextDesign(
-                                text: 'Title for The ${widget.titleType}',
-                                fontweight: FontWeight.w700,
-                                fontsize: 18,
-                                color: AppColor.darkColor,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: CustomFields(
-                                controller: widget.controller,
-                                labeltext: 'Title',
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, top: 8.0),
-                              child: TextDesign(
-                                text:
-                                    'Choose a suitable Title for ${widget.titleType}',
-                                fontsize: 12,
-                                color: AppColor.textColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        widget.addPost
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: TextDesign(
-                                      text: 'Select a Post Type',
-                                      fontweight: FontWeight.w700,
-                                      fontsize: 18,
-                                      color: AppColor.darkColor,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: CustomDropdown(
-                                      onChanged: (value) {
-                                        setState(() {
-                                          widget.viewModel!.postType = value!;
-                                          print(widget.viewModel!.postType);
-                                        });
-                                      },
-                                      data: postType,
-                                      fontSize: 12,
-                                      values: postType.first,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 8.0),
-                                    child: TextDesign(
-                                      text:
-                                          'Choose a PostType for ${widget.titleType}',
-                                      fontsize: 12,
-                                      color: AppColor.textColor,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : const SizedBox(),
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextDesign(
-                                  text: 'Title for The ${widget.titleType}',
-                                  fontweight: FontWeight.w700,
-                                  fontsize: 18,
-                                  color: AppColor.darkColor,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: CustomFields(
-                                  controller: widget.controller,
-                                  labeltext: 'Title',
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, top: 8.0),
-                                child: TextDesign(
-                                  text:
-                                      'Choose suitable Title for ${widget.titleType}',
-                                  fontsize: 12,
-                                  color: AppColor.textColor,
-                                ),
-                              ),
-                            ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: CustomFields(
+                            title: 'Title for The ${widget.titleType}',
+                            controller: widget.controller,
+                            labeltext: 'Title',
                           ),
                         ),
-                        widget.addPost
-                            ? Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextDesign(
-                                        text: 'Select Post Type',
-                                        fontweight: FontWeight.w700,
-                                        fontsize: 18,
-                                        color: AppColor.darkColor,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: CustomDropdown(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            widget.viewModel!.postType = value!;
-                                            print(widget.viewModel!.postType);
-                                          });
-                                        },
-                                        data: postType,
-                                        fontSize: 12,
-                                        values: postType.first,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, top: 8.0),
-                                      child: TextDesign(
-                                        text:
-                                            'Choose suitable Type for ${widget.titleType}',
-                                        fontsize: 12,
-                                        color: AppColor.textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : const SizedBox(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                          child: TextDesign(
+                            text: 'Choose suitable Title for ${widget.titleType}',
+                            fontsize: 12,
+                            color: AppColor.textColor,
+                          ),
+                        ),
                       ],
                     ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextDesign(
-                      text: 'Description',
-                      fontweight: FontWeight.w700,
-                      fontsize: 18,
-                      color: AppColor.darkColor,
-                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: TextDesign(
-                      text: 'Describe about your ${widget.titleType}',
-                      // fontStyle: FontStyle.italic,
-                      fontsize: 12,
-                      color: AppColor.textColor,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        // height: 200,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: AppColor.borderColor)),
-                        child: QuillBox(
-                          controller: widget.quillC,
-                          notPost: widget.addPost ? false : true,
-                          placeHolder: widget.addPost
-                              ? 'Description of Beneficiary...'
-                              : 'Description of ${widget.titleType}...',
-                        )),
-                  ),
+                  if (widget.addPost)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextDesign(
+                              text: 'Select Post Type',
+                              fontweight: FontWeight.w700,
+                              fontsize: 18,
+                              color: AppColor.darkColor,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: CustomDropdown(
+                              hintText: 'Select Post Type',
+                              onChanging: (value) {
+                                setState(() {
+                                  widget.viewModel!.postType = value!;
+                                  print(widget.viewModel!.postType);
+                                });
+                              },
+                              data: postType,
+                              fontSize: 12,
+                              values: widget.viewModel!.postType,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                            child: TextDesign(
+                              text: 'Choose suitable Type for ${widget.titleType}',
+                              fontsize: 12,
+                              color: AppColor.textColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                 ],
               ),
             ),
+            if (widget.addPost)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: CustomFields(
+                  post: true,
+                  title: "Description",
+                  hintText: "Enter some description",
+                  controller: widget.viewModel!.desccontroller,
+                  canbeNull: false,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  validator: (p0) {
+                    if (p0!.length < 3) {
+                      return "Please enter a valid Description.";
+                    }
+                    return null;
+                  },
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextDesign(
+                        text: 'Description',
+                        fontweight: FontWeight.w700,
+                        fontsize: 18,
+                        color: AppColor.darkColor,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextDesign(
+                        text: 'Describe about your ${widget.titleType}',
+                        fontsize: 12,
+                        color: AppColor.textColor,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: AppColor.borderColor),
+                        ),
+                        child: QuillBox(
+                          controller: widget.quillC!,
+                          notPost: true,
+                          placeHolder: 'Description of ${widget.titleType}...',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             buildNavigationButtons(context,
                 nextPage: widget.nextPage,
                 previousPage: widget.previousPage,
-                isIndexFirst: widget.addPost ? false : true),
-            Text(widget.quillC.document.toDelta().toString())
+                isIndexFirst: !widget.addPost),
           ],
         ),
       ),

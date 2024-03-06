@@ -69,7 +69,7 @@ class RegisterView extends StatelessWidget {
                             hinttext: AppString.confirmpasswordhint,
                             isPassword: true,
                             isConfirm: true,
-                            confirmPasswordController: viewModel.passController,
+                            // confirmPasswordController: viewModel.passController,
                           ),
                           ButtonFields(
                             text: AppString.register,

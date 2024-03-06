@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unity_admin/view_model/ad_management_view_Model.dart';
 import 'package:unity_admin/view_model/blog_section_view_model.dart';
 import 'package:unity_admin/view_model/category_view_model.dart';
+import 'package:unity_admin/view_model/dashboard_view_model.dart';
 import 'package:unity_admin/view_model/page_section_view_Model.dart';
 import 'package:unity_admin/view_model/user_manage_view_model.dart';
 import 'core/routes/router_generator.dart';
@@ -9,6 +11,9 @@ import 'core/routes/routes_name.dart';
 import 'core/theme/app_color.dart';
 import 'view_model/add_post_view_model.dart';
 import 'view_model/login_signup_view_model.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'view_model/post_verify_view_model.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -27,20 +32,16 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<LoginViewModel>(create: (_) => LoginViewModel()),
-        ChangeNotifierProvider<RegisterViewModel>(
-            create: (_) => RegisterViewModel()),
-        ChangeNotifierProvider<LogOutViewModel>(
-            create: (_) => LogOutViewModel()),
-        ChangeNotifierProvider<CategoryViewModel>(
-            create: (_) => CategoryViewModel()),
-        ChangeNotifierProvider<AddPostViewModel>(
-            create: (_) => AddPostViewModel()),
-        ChangeNotifierProvider<PageSectionViewModel>(
-            create: (_) => PageSectionViewModel()),
-        ChangeNotifierProvider<BlogSectionViewModel>(
-            create: (_) => BlogSectionViewModel()),
-        ChangeNotifierProvider<UserViewModel>(
-            create: (_) => UserViewModel()),
+        ChangeNotifierProvider<RegisterViewModel>(create: (_) => RegisterViewModel()),
+        ChangeNotifierProvider<LogOutViewModel>(create: (_) => LogOutViewModel()),
+        ChangeNotifierProvider<CategoryViewModel>(create: (_) => CategoryViewModel()),
+        ChangeNotifierProvider<AddPostViewModel>(create: (_) => AddPostViewModel()),
+        ChangeNotifierProvider<PageSectionViewModel>(create: (_) => PageSectionViewModel()),
+        ChangeNotifierProvider<BlogSectionViewModel>(create: (_) => BlogSectionViewModel()),
+        ChangeNotifierProvider<UserViewModel>(create: (_) => UserViewModel()),
+        ChangeNotifierProvider<AdsViewModel>(create: (_) => AdsViewModel()),
+        ChangeNotifierProvider<PostVerificationViewModel>(create: (_) => PostVerificationViewModel()),
+        ChangeNotifierProvider<DashboardViewModel>(create: (_) => DashboardViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -49,12 +50,10 @@ class _MyAppState extends State<MyApp> {
           // brightness: Brightness.dark,
 
           appBarTheme: AppBarTheme(
-              iconTheme:
-                  const IconThemeData().copyWith(color: AppColor.darkColor),
+              iconTheme: const IconThemeData().copyWith(color: AppColor.darkColor),
               // backgroundColor: Colors.white,
-              titleTextStyle: TextStyle(
+              titleTextStyle: GoogleFonts.anton(
                 color: AppColor.whiteColor,
-                fontFamily: 'Montserrat',
               )),
           scaffoldBackgroundColor: AppColor.greyColor,
           // backgroundColor: const Color(0xFF121212),
@@ -63,7 +62,7 @@ class _MyAppState extends State<MyApp> {
           iconTheme: const IconThemeData().copyWith(color: AppColor.darkColor),
           fontFamily: 'Montserrat',
           textTheme: TextTheme(
-            displayMedium: TextStyle(
+            displayMedium: GoogleFonts.anton(
               color: AppColor.darkColor,
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -106,4 +105,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
