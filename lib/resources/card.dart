@@ -6,12 +6,11 @@ import '../core/theme/app_color.dart';
 class DashBoardCard extends StatefulWidget {
   final int? count;
   final String? title;
+  final Color? iconcolor;
   final IconData? icon;
   final VoidCallback? onClick;
 
-  const DashBoardCard(
-      {Key? key, this.count, this.title, this.icon, this.onClick})
-      : super(key: key);
+  const DashBoardCard({super.key, this.count, this.title, this.icon, this.onClick, this.iconcolor});
 
   @override
   State<DashBoardCard> createState() => _DashBoardCardState();
@@ -22,11 +21,13 @@ class _DashBoardCardState extends State<DashBoardCard> {
   double scale = 1.0;
 
   late Color color;
+  late Color txtcolor;
 
   @override
   void initState() {
     super.initState();
-    color = AppColor.secondaryColor;
+    color = AppColor.white;
+    txtcolor = AppColor.darkColor;
   }
 
   @override
@@ -35,20 +36,22 @@ class _DashBoardCardState extends State<DashBoardCard> {
         child: MouseRegion(
           onEnter: (e) {
             setState(() {
-              offsetY = 3;
-              scale = 1.02;
-              color = AppColor.primaryColor;
+              offsetY = 3.2;
+              scale = 1.07;
+              color = AppColor.white;
+              txtcolor = AppColor.darkColor;
             });
           },
           onExit: (e) {
             setState(() {
               offsetY = 0.0;
               scale = 1.0;
-              color = AppColor.secondaryColor;
+              color = AppColor.white;
+              txtcolor = AppColor.darkColor;
             });
           },
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 900),
+            duration: const Duration(milliseconds: 300),
             child: Transform.scale(
               scale: scale,
               child: Transform.translate(
@@ -58,7 +61,7 @@ class _DashBoardCardState extends State<DashBoardCard> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: AppColor.darkColor.withOpacity(.3),
+                      color: AppColor.primaryColor,
                     ),
                     color: color,
                   ),
@@ -71,37 +74,39 @@ class _DashBoardCardState extends State<DashBoardCard> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 TextDesign(
                                   text: widget.count.toString(),
-                                  fontsize: 24,
-                                  color: Colors.black,
-                                  // fontWeight: FontWeight.w600,
+                                  fontsize: 44,
+                                  color: txtcolor,
+                                  fontweight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
                                 ),
                                 Expanded(
-                                  child: Text(widget.title.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'PTserif')),
+                                  child: TextDesign(
+                                    text: widget.title.toString(),
+                                    fontsize: 24,
+                                    color: txtcolor,
+                                    fontweight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  ),
                                 ),
                               ],
                             ),
                             Expanded(
                               child: Container(
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerRight,
                                 // decoration: BoxDecoration(
                                 //     color: Colors.transparent,
                                 //     borderRadius: BorderRadius.circular(100)),
 
                                 child: Icon(
                                   widget.icon!,
-                                  size: 25,
+                                  size: 50,
+                                  color:widget.iconcolor,
+
                                 ),
                               ),
                             ),

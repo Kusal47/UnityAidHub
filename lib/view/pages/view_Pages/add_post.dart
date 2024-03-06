@@ -2,13 +2,16 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unity_admin/Models/category_model.dart';
 import 'package:unity_admin/core/routes/routes_name.dart';
 import 'package:unity_admin/core/theme/app_color.dart';
 import 'package:unity_admin/resources/custom_dropdown.dart';
 import 'package:unity_admin/utils/country_picker.dart';
+import 'package:unity_admin/view_model/category_view_model.dart';
+import 'package:unity_admin/view_model/login_signup_view_model.dart';
 import 'package:unity_admin/widgets/document_upload.dart';
-import '../../../data/lists.dart';
 import '../../../resources/texfields_pages.dart';
+import '../../../utils/dialog_box.dart';
 import '../../../utils/text_design.dart';
 import '../../../view_model/add_post_view_model.dart';
 import '../../../widgets/title_richText_page.dart';
@@ -25,123 +28,146 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   var borderColor = AppColor.borderColor;
   var width = 1.0;
+
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<AddPostViewModel>(context);
     Size size = MediaQuery.of(context).size;
     return MyScaffold(
-      route: RouteName.postadd,
-      body: SingleChildScrollView(
-        child: Center(
-          child: SizedBox(
-            height: size.height * 0.9,
-            width: 600,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: PageView.builder(
-                controller: viewModel.pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  switch (index) {
-                    case 0:
-                      return buildCategoryFundingPage(
-                        context,
-                        viewModel,
-                        formKey: viewModel.formKeys[0],
-                        nextPage: () {
-                          viewModel.categoryAndFunding(
-                              context, viewModel.formKeys[0]);
-                          print(
-                            viewModel.preCurrency +
-                                viewModel.fundController.text,
+        route: RouteName.postadd,
+        body: Consumer3<AddPostViewModel, CategoryViewModel, LoginViewModel>(
+            builder: (context, addPost, categoryVM, loginVM, _) {
+          return SingleChildScrollView(
+            child: Center(
+              child: SizedBox(
+                height: size.height * 0.9,
+                width: 600,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: PageView.builder(
+                    controller: viewModel.pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      switch (index) {
+                        case 0:
+                          return buildCategoryFundingPage(
+                            context,
+                            viewModel,
+                            formKey: viewModel.formKeys[0],
+                            nextPage: ()  {
+                              viewModel.categoryAndFunding(context, viewModel.formKeys[0]);
+                              print(
+                                viewModel.preCurrency + viewModel.fundController.text,
+                              );
+                            },
+                            previousPage: () => {},
                           );
-                        },
-                        previousPage: () => {},
-                      );
-                    case 1:
-                      return buildBeneficiaryInformationPage(
-                        context,
-                        viewModel,
-                        nextPage: () {
-                          viewModel.beneficiary(context);
-                        },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                      );
-                    case 2:
-                      return CommonBuildPages(
-                        addPost: true,
-                        formKey: viewModel.formKeys[1],
-                        nextPage: () {
-                          viewModel.titleAndDesc(
-                              context, viewModel.formKeys[1]);
-                        },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        quillC: viewModel.quillcontroller,
-                        controller: viewModel.titlecontroller,
-                        titleType: 'Campaign',
-                        viewModel: viewModel,
-                      );
-                    case 3:
-                      return DocumentUploads(
-                        fileBytesList: viewModel.fileBytesList,
-                        fileNamesList: viewModel.fileNamesList,
-                        title: 'Document',
-                        titleType: 'Campaign',
-                        onTap: () {
-                          viewModel.pickFiles(context);
-                        },
-                        nextPage: () {
-                          viewModel.documentUpload(context);
-                        },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                      );
+                        // case 1:
+                        //   return buildBeneficiaryInformationPage(
+                        //     context,
+                        //     viewModel,
+                        //     nextPage: () {
+                        //       viewModel.beneficiary(context);
+                        //     },
+                        //     previousPage: () => viewModel.pageController.previousPage(
+                        //       duration: const Duration(milliseconds: 300),
+                        //       curve: Curves.easeInOut,
+                        //     ),
+                        //   );
+                        case 1:
+                          return CommonBuildPages(
+                            addPost: true,
+                            formKey: viewModel.formKeys[1],
+                            nextPage: () {
+                              viewModel.titleAndDesc(context, viewModel.formKeys[1]);
+                            },
+                            previousPage: () => viewModel.pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                            desccontroller: viewModel.desccontroller,
+                            controller: viewModel.titlecontroller,
+                            titleType: 'Campaign',
+                            viewModel: viewModel,
+                          );
+                        case 2:
+                          return DocumentUploads(
+                            fileBytesList: viewModel.fileBytesList,
+                            fileNamesList: viewModel.fileNamesList,
+                            title: 'Document',
+                            titleType: 'Campaign',
+                            onTap: () {
+                              viewModel.pickFiles(context);
+                            },
+                            nextPage: () {
+                              viewModel.documentUpload(context);
+                            },
+                            previousPage: () => viewModel.pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          );
+                        case 3:
+                          return DocumentUploads(
+                            fileBytesList: viewModel.fileBytesList1,
+                            fileNamesList: viewModel.fileNamesList1,
+                            title: 'Image',
+                            titleType: 'Campaign',
+                            onTap: () {
+                              viewModel.pickFiles(context, isImage: true);
+                            },
+                            nextPage: () {
+                              viewModel.documentUpload(context);
+                            },
+                            previousPage: () => viewModel.pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          );
 
-                    case 4:
-                      return buildTermsPage(
-                        context,
-                        viewModel,
-                        submitDetails: () {
-                          viewModel.submitPost(context);
-                        },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                      );
-                    default:
-                      return Container();
-                  }
-                },
-                itemCount: 5,
+                        case 4:
+                          return buildTermsPage(
+                            context,
+                            viewModel,
+                            submitDetails: () async {
+                              print('submitted');
+                              print(viewModel.selectedCategory!.id);   
+                             await viewModel.submitPost(
+                                    context,
+                                    viewModel.selectedCategory!.id,
+                                  );
+                              
+                            },
+                            previousPage: () => viewModel.pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          );
+                        default:
+                          return Container();
+                      }
+                    },
+                    itemCount: 5,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        }));
   }
 
-  Widget buildCategoryFundingPage(
-    BuildContext context,
-    AddPostViewModel viewModel, {
-    required GlobalKey<FormState> formKey,
-    required VoidCallback nextPage,
-    required VoidCallback previousPage,
-  }) {
-    Size size = MediaQuery.of(context).size;
+Widget buildCategoryFundingPage(
+  BuildContext context,
+  AddPostViewModel viewModel, {
+  required GlobalKey<FormState> formKey,
+  required VoidCallback nextPage,
+  required VoidCallback previousPage,
+}) {
+  Size size = MediaQuery.of(context).size;
+  return Consumer<CategoryViewModel>(builder: (context, categoryViewModel, _) {
+    List<CategoryData> categoryList = categoryViewModel.fetchedCategories;
+ 
+
     return SingleChildScrollView(
       child: Form(
         key: formKey,
@@ -179,20 +205,15 @@ class _AddPostState extends State<AddPost> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CustomDropdown(
-                      hintText: 'Select Category',
-                      onChanged: (value) {
-                        setState(() {
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: CustomDropdown(
+                        value: viewModel.selectedCategory,
+                        onChanged: (CategoryData? value) {
                           viewModel.selectedCategory = value!;
-                          print(viewModel.selectedCategory);
-                        });
-                      },
-                      data: categoryList,
-                      fontSize: 12,
-                      values: viewModel.selectedCategory,
-                    ),
-                  ),
+                        },
+                        items: categoryList,
+                        category: true,
+                      )),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                     child: TextDesign(
@@ -222,15 +243,15 @@ class _AddPostState extends State<AddPost> {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColor.darkColor,
-                          padding: const EdgeInsets.all(10),
-                          side: BorderSide(color: borderColor, width: width),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(0)))),
+                        foregroundColor: AppColor.darkColor,
+                        padding: const EdgeInsets.all(10),
+                        side: BorderSide(color: borderColor, width: width),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(0)),
+                        ),
+                      ),
                       onPressed: () {
-                        CountryPickerUtils().pickCountry(context, () {},
-                            (Country? country) {
+                        CountryPickerUtils().pickCountry(context, () {}, (Country? country) {
                           setState(() {
                             viewModel.selectedCountry = country!.name;
                           });
@@ -261,8 +282,7 @@ class _AddPostState extends State<AddPost> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                     child: TextDesign(
-                      text:
-                          'This country will be used to dispaly where benificiary belongs to.',
+                      text: 'This country will be used to dispaly where benificiary belongs to.',
                       // fontStyle: FontStyle.italic,
                       fontsize: 12,
                       color: AppColor.textColor,
@@ -271,56 +291,15 @@ class _AddPostState extends State<AddPost> {
                 ],
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all( 8.0),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: TextDesign(
-            //           text: 'Select a Post Type',
-            //           fontweight: FontWeight.w700,
-            //           fontsize: 18,
-            //           color: AppColor.darkColor,
-            //         ),
-            //       ),
-            //       Padding(
-            //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            //         child: CustomDropdown(
-            //           // hintText: '',
-            //           onChanged: (value) {
-            //             setState(() {
-            //               viewModel.postType = value!;
-            //               print(viewModel.postType);
-            //             });
-            //           },
-            //           data: postType,
-            //           fontSize: 12,
-            //           values: postType.first,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-          
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextDesign(
-                      text: 'Target Funding',
-                      fontweight: FontWeight.w700,
-                      fontsize: 18,
-                      color: AppColor.darkColor,
-                    ),
-                  ),
-                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: CustomFields(
+                      title: 'Target Funding',
                       controller: viewModel.fundController,
                       isNumber: true,
                       hinttext: '0.00',
@@ -356,7 +335,8 @@ class _AddPostState extends State<AddPost> {
         ),
       ),
     );
-  }
+  });
+}
 
   Widget buildBeneficiaryInformationPage(
     BuildContext context,
@@ -366,77 +346,78 @@ class _AddPostState extends State<AddPost> {
   }) {
     Size size = MediaQuery.of(context).size;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 8),
-          child: TextDesign(
-            text: 'Beneficiary Information',
-            fontweight: FontWeight.w700,
-            fontsize: 18,
-            color: AppColor.darkColor,
-            textAlign: TextAlign.center,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 8),
+            child: TextDesign(
+              text: 'Beneficiary Information',
+              fontweight: FontWeight.w700,
+              fontsize: 18,
+              color: AppColor.darkColor,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        Divider(
-          color: AppColor.primaryColor,
-          thickness: 2,
-          indent: size.width * 0.01,
-          endIndent: size.width * 0.01,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                child: TextDesign(
-                  text: 'Beneficiary',
-                  fontweight: FontWeight.w700,
-                  fontsize: 18,
-                  color: AppColor.darkColor,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                child: TextDesign(
-                  text: 'Choose a beneficiary for your campaign',
-                  fontsize: 12,
-                  color: AppColor.textColor,
-                ),
-              ),
-              buildBeneficiaryTile(
-                title: 'Myself',
-                subtitle:
-                    'You will be receiving funds to your Bank account from the campaign',
-                selectedBenificiary: 'MySelf',
-                viewModel: viewModel,
-              ),
-              buildBeneficiaryTile(
-                title: 'Someone Else',
-                subtitle:
-                    'Beneficiary will be receiving funds to their Bank account from the campaign',
-                selectedBenificiary: 'Someone Else',
-                viewModel: viewModel,
-              ),
-              buildBeneficiaryTile(
-                title: 'Registered Non-Profit Organization',
-                subtitle:
-                    'Organization will be receiving funds to their Bank account from the campaign',
-                selectedBenificiary: 'Non-Profit Organization',
-                viewModel: viewModel,
-              ),
-            ],
+          Divider(
+            color: AppColor.primaryColor,
+            thickness: 2,
+            indent: size.width * 0.01,
+            endIndent: size.width * 0.01,
           ),
-        ),
-        buildNavigationButtons(
-          context,
-          nextPage: nextPage,
-          previousPage: previousPage,
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                  child: TextDesign(
+                    text: 'Beneficiary',
+                    fontweight: FontWeight.w700,
+                    fontsize: 18,
+                    color: AppColor.darkColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                  child: TextDesign(
+                    text: 'Choose a beneficiary for your campaign',
+                    fontsize: 12,
+                    color: AppColor.textColor,
+                  ),
+                ),
+                buildBeneficiaryTile(
+                  title: 'Myself',
+                  subtitle: 'You will be receiving funds to your Bank account from the campaign',
+                  selectedBenificiary: 'MySelf',
+                  viewModel: viewModel,
+                ),
+                buildBeneficiaryTile(
+                  title: 'Someone Else',
+                  subtitle:
+                      'Beneficiary will be receiving funds to their Bank account from the campaign',
+                  selectedBenificiary: 'Someone Else',
+                  viewModel: viewModel,
+                ),
+                buildBeneficiaryTile(
+                  title: 'Registered Non-Profit Organization',
+                  subtitle:
+                      'Organization will be receiving funds to their Bank account from the campaign',
+                  selectedBenificiary: 'Non-Profit Organization',
+                  viewModel: viewModel,
+                ),
+              ],
+            ),
+          ),
+          buildNavigationButtons(
+            context,
+            nextPage: nextPage,
+            previousPage: previousPage,
+          ),
+        ],
+      ),
     );
   }
 
@@ -535,9 +516,7 @@ class _AddPostState extends State<AddPost> {
             ),
           ),
           buildNavigationButtons(context,
-              nextPage: submitDetails,
-              previousPage: previousPage,
-              isIndexLast: true),
+              nextPage: submitDetails, previousPage: previousPage, isIndexLast: true),
         ],
       ),
     );
@@ -561,9 +540,7 @@ class _AddPostState extends State<AddPost> {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-                width: viewModel.selectedBenificiary == selectedBenificiary
-                    ? 2
-                    : 1,
+                width: viewModel.selectedBenificiary == selectedBenificiary ? 2 : 1,
                 color: viewModel.selectedBenificiary == selectedBenificiary
                     ? viewModel.selectedColor
                     : AppColor.borderColor),

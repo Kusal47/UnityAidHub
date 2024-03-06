@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unity_admin/core/routes/routes_name.dart';
 import '../../../core/theme/app_color.dart';
+import '../../../utils/dialog_box.dart';
+import '../../../utils/toast_utils.dart';
 import '../../../view_model/page_section_view_Model.dart';
 import '../../../widgets/title_richText_page.dart';
 import '../../../widgets/document_upload.dart';
@@ -15,7 +17,6 @@ class PagesSection extends StatefulWidget {
 }
 
 class _PagesSectionState extends State<PagesSection> {
-
   var borderColor = AppColor.borderColor;
   var width = 1.0;
 
@@ -44,7 +45,7 @@ class _PagesSectionState extends State<PagesSection> {
                         nextPage: () {
                           viewModel.titleAndDesc(context, viewModel.formKeys);
                         },
-                        previousPage: () =>  viewModel.pageController.previousPage(
+                        previousPage: () => viewModel.pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         ),
@@ -65,7 +66,7 @@ class _PagesSectionState extends State<PagesSection> {
                         nextPage: () {
                           viewModel.submitPost(context);
                         },
-                        previousPage: () =>  viewModel.pageController.previousPage(
+                        previousPage: () => viewModel.pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         ),
@@ -74,7 +75,7 @@ class _PagesSectionState extends State<PagesSection> {
                       return Container();
                   }
                 },
-                itemCount: 3, 
+                itemCount: 2,
               ),
             ),
           ),

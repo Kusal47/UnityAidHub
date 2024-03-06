@@ -10,6 +10,7 @@ import '../../view/pages/view_Pages/category.dart';
 import '../../view/pages/view_Pages/pages_section.dart';
 import '../../view/pages/view_Pages/post_verification.dart';
 import '../../view/pages/view_Pages/user_management.dart';
+import '../../view/pages/view_Pages/verified_posts.dart';
 // import '../../view/pages/view_Pages/roles_management.dart';
 // import '../../view/pages/view_Pages/comments_crud.dart';
 
@@ -30,6 +31,8 @@ import '../../view/pages/view_Pages/user_management.dart';
 
       case RouteName.postverify:
         return  const PostVerification();
+      case RouteName.verifedpost:
+        return  const VerifiedPosts();
       
       case RouteName.postadd:
         return  const AddPost();

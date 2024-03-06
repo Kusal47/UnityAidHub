@@ -1,36 +1,56 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:unity_admin/utils/Helper_Funtions/formdata_to_json.dart';
 
+import '../Models/category_model.dart';
+import '../core/const/base_url.dart';
+import '../core/routes/routes_name.dart';
+import '../utils/cloudinary.dart';
+import '../utils/custom_notification_bar.dart';
+import '../utils/dialog_box.dart';
 import '../utils/toast_utils.dart';
+import '../view/pages/view_Pages/display.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final TextEditingController categoryController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  List<String> categoryList = [];
   final List<Map> details = [];
+
   List<Uint8List> fileBytesList = [];
   List<String> fileNamesList = [];
-
   Uint8List? bytesList;
   String? namesList;
+
   List<Uint8List> fileBytesList2 = [];
   List<String> fileNamesList2 = [];
-
   Uint8List? bytesList2;
   String? namesList2;
+
   List<Uint8List> fileBytesList3 = [];
   List<String> fileNamesList3 = [];
-
   Uint8List? bytesList3;
   String? namesList3;
+
   bool hovered = false;
   int? hoveredIndex;
 
   void reset() {
     categoryController.clear();
+
+    fileBytesList = [];
+    fileNamesList = [];
+    fileBytesList2 = [];
+    fileNamesList2 = [];
+    fileBytesList3 = [];
+    fileNamesList3 = [];
   }
 
   Future<void> pickFiles(
@@ -95,23 +115,65 @@ class CategoryViewModel extends ChangeNotifier {
 
   Future<void> addCategory(BuildContext context) async {
     try {
-      if (formKey.currentState!.validate()) {
-        categoryList.add(categoryController.text);
-        details.add({
-          'newCategory': categoryController,
-          'imagw1': fileBytesList,
-          'imagw2': fileBytesList2,
-          'imagw3': fileBytesList3,
-        });
+      Dio dio = Dio();
+      List<String> darkImageUrls = await uploadFilesToCloudinary(fileBytesList);
+      List<String> lightImageUrls = await uploadFilesToCloudinary(fileBytesList);
+      List<String> primaryImageUrls = await uploadFilesToCloudinary(fileBytesList);
+
+      FormData formData = FormData.fromMap({
+        'name': categoryController.text,
+        if (fileBytesList.isNotEmpty) 'darkImage': darkImageUrls,
+        if (fileBytesList2.isNotEmpty) 'lightImage': lightImageUrls,
+        if (fileBytesList3.isNotEmpty) 'primaryImage': primaryImageUrls,
+      });
+
+      Map<String, dynamic> jsonData = TextAndImageConversion().formDataToJson(formData);
+
+      // Convert the JSON data to a string for logging or debugging
+      String jsonString = jsonEncode(jsonData);
+      print('JSON Data: $jsonString');
+      Response response = await dio.post(
+        '${ApiUrl.baseUrl}category',
+        data: jsonData,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Data uploaded successfully');
+        CostumNotificationBar.toastMessage("Post added Successfully");
+        reset();
       } else {
-        ToastUtils()
-            .showCherryToast(context, 'Please enter category name', true);
+        print('Failed to upload data. Status code: ${response.statusCode}');
+        CostumNotificationBar.toastMessage("Post adding UnSuccessful");
       }
-    } catch (e) {}
+    } catch (e) {
+      print('Error occurred during data upload: $e');
+    }
+  }
 
-    print('Category Added as ${categoryController.text}');
+  List<CategoryData> fetchedCategories = [];
 
-    categoryController.clear();
+  Future<List<CategoryData>> fetchCategories() async {
+    try {
+      Dio dio = Dio();
+      Response response = await dio.get('${ApiUrl.baseUrl}category');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        print(response.data);
+        fetchedCategories = data.map((category) => CategoryData.fromJson(category)).toList();
+        notifyListeners();
+      } else {
+        print('Failed to fetch categories. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error occurred during category fetch: $e');
+    }
+    return fetchedCategories;
   }
 
   @override

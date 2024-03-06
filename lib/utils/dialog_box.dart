@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/theme/app_color.dart';
+import 'package:unity_admin/utils/text_design.dart';
 
 void showDialogBox(
     BuildContext context, String title, String message, Function()? onPressed,Function()? onPressedNo) {
@@ -9,14 +9,11 @@ void showDialogBox(
         return AlertDialog(
           shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
           elevation: 10,
-          title: Text(
+          title: TextDesign(text:
             title,
-            // style: TextStyle(color: AppColor.textColor),
           ),
-          content: Text(
+          content: TextDesign(text:
             message,
-
-            // style: TextStyle(color: AppColor.textColor),
           ),
           actions: [
             InkWell(

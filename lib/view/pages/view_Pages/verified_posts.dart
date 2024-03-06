@@ -7,7 +7,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:unity_admin/Models/post_model.dart';
 import 'package:unity_admin/core/routes/routes_name.dart';
-import 'package:unity_admin/utils/dialog_box.dart';
 import 'package:unity_admin/utils/toast_utils.dart';
 import 'package:unity_admin/view_model/post_verify_view_model.dart';
 import '../../../core/theme/app_color.dart';
@@ -15,14 +14,14 @@ import '../../../utils/document_details.dart';
 import '../../../utils/text_design.dart';
 import '../AdminScaffold/admin_scaffold_page.dart';
 
-class PostVerification extends StatefulWidget {
-  const PostVerification({super.key});
+class VerifiedPosts extends StatefulWidget {
+  const VerifiedPosts({super.key});
 
   @override
-  _PostVerificationState createState() => _PostVerificationState();
+  _VerifiedPostsState createState() => _VerifiedPostsState();
 }
 
-class _PostVerificationState extends State<PostVerification> {
+class _VerifiedPostsState extends State<VerifiedPosts> {
   List<Post> postLists = [];
   final List<Post> _post = [];
   int selectedPostIndex = 0;
@@ -31,7 +30,7 @@ class _PostVerificationState extends State<PostVerification> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _futurePosts = Provider.of<PostVerificationViewModel>(context).fetchPostsFromApi(
+    _futurePosts = Provider.of<PostVerificationViewModel>(context).fetchVerifiedPosts(
         context); // Initialize the future to fetch posts if it's not already initialized
     _futurePosts.then((posts) {
       addPost(posts);
@@ -39,7 +38,7 @@ class _PostVerificationState extends State<PostVerification> {
   }
 
   bool showLoad = true;
-
+ bool selected = false;
   @override
   void initState() {
     super.initState();
@@ -60,142 +59,131 @@ class _PostVerificationState extends State<PostVerification> {
 
   // List<Uint8List> imageBytes = [];
 
-  // Widget buildTile(
-  //   Post post,
-  //   int index,
-  // ) {
-  // List<Uint8List> imageUint8List = post.image.map((imageString) {
-  //   // Convert each image string to Uint8List
-  //   String base64String = imageString;
-  //   int missingPadding = (4 - base64String.length % 4) % 4;
-  //   base64String += '=' * missingPadding;
-  //   Uint8List bytes = Uint8List.fromList(base64.decode(base64String));
-  //   return bytes;
-  // }).toList();
-  // print(index);
-  Widget buildTile(
-    Post post,
-    int index,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedPostIndex = index;
-        });
-      },
-      child: Card(
-        shape: index == selectedPostIndex
-            ? RoundedRectangleBorder(
-                side: BorderSide(
-                  color: AppColor.primaryColor,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(10.0),
-              )
-            : RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: CarouselSlider.builder(
-                itemCount: post.image.length,
-                itemBuilder: (BuildContext context, int index, int realIndex) {
-                  final imageUrl = post.image[index];
-                  return imageUrl.startsWith('http') && imageUrl.startsWith('https')
-                      ? Image.network(
-                          imageUrl,
-                          fit: BoxFit.fill,
-                          filterQuality: FilterQuality.high,
-                        )
-                      : Image.memory(
-                          base64.decode(imageUrl.split(',').last),
-                          fit: BoxFit.fill,
-                          filterQuality: FilterQuality.high,
-                        );
-                },
-                options: CarouselOptions(
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 0.8,
-                  initialPage: 0,
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: true,
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 6,
-              child: ListTile(
-                onTap: () {
-                  setState(() {
-                    selectedPostIndex = index;
-                  });
-                },
-                title: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextDesign(
-                        text: post.title,
-                        fontsize: 14,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              TextDesign(
-                                text: '${post.startDate}, ',
-                                fontweight: FontWeight.w600,
-                                fontsize: 12,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              TextDesign(
-                                text: post.country,
-                                fontweight: FontWeight.w600,
-                                fontsize: 12,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                          TextDesign(
-                            text: post.goalAmount,
-                            fontweight: FontWeight.w600,
-                            fontsize: 12,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ],
+ Widget buildTile(
+  Post post,
+  int index,
+) {
+
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        selectedPostIndex = index;
+      });
+    },
+    child: Card(
+      shape: index == selectedPostIndex
+              ? RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: AppColor.primaryColor,
+                    width: 2.0,
                   ),
+                  borderRadius: BorderRadius.circular(10.0),
+                )
+              : RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-                subtitle: TextDesign(
-                  text: post.description,
-                  fontsize: 12,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: CarouselSlider.builder(
+              itemCount: post.image.length,
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                final imageUrl = post.image[index];
+                return imageUrl.startsWith('http')
+                    ? Image.network(
+                        imageUrl,
+                        fit: BoxFit.fill,
+                        filterQuality: FilterQuality.high,
+                      )
+                    : Image.memory(
+                        base64.decode(
+                            imageUrl.split(',').last),
+                        fit: BoxFit.fill,
+                        filterQuality: FilterQuality.high,
+                      );
+              },
+              options: CarouselOptions(
+                aspectRatio: 16 / 9,
+                viewportFraction: 0.8,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                scrollDirection: Axis.horizontal,
               ),
             ),
-            const Expanded(
-              flex: 1,
-              child: Icon(Icons.arrow_right_alt_outlined),
+          ),
+          Expanded(
+            flex: 6,
+            child: ListTile(
+              onTap: () {
+                setState(() {
+                  selectedPostIndex = index;
+                });
+              },
+              title: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextDesign(
+                      text: post.title,
+                      fontsize: 14,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            TextDesign(
+                              text: '${post.startDate}, ',
+                              fontweight: FontWeight.w600,
+                              fontsize: 12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            TextDesign(
+                              text: post.country,
+                              fontweight: FontWeight.w600,
+                              fontsize: 12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        TextDesign(
+                          text: post.goalAmount,
+                          fontweight: FontWeight.w600,
+                          fontsize: 12,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              subtitle: TextDesign(
+                text: post.description,
+                fontsize: 12,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
             ),
-          ],
-        ),
+          ),
+          const Expanded(
+            flex: 1,
+            child: Icon(Icons.arrow_right_alt_outlined),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget buildDesc(Size size, PostVerificationViewModel viewModel) {
     if (selectedPostIndex >= 0 && selectedPostIndex < postLists.length) {
@@ -298,80 +286,6 @@ class _PostVerificationState extends State<PostVerification> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 50,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: () async {
-                                    try {
-                                      showDialogBox(context, 'Reject this Post',
-                                          'Are you sure to Reject this Post', () async {
-                                        await viewModel.rejectPost(
-                                            selectedPost.id.toString(), context);
-                                        await viewModel.fetchPostsFromApi(context);
-                                        Navigator.pushNamed(context, RouteName.postverify);
-                                      }, () => {Navigator.pop(context)});
-                                    } catch (e) {
-                                      print('Error: $e');
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      color: AppColor.redColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Reject',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: AppColor.whiteColor),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: () async {
-                                    try {
-                                      showDialogBox(context, 'Approve this Post',
-                                          'Are you sure to Approve this Post', () async {
-                                        await viewModel.approvePost(
-                                            context, selectedPost.id.toString());
-                                        await viewModel.fetchPostsFromApi(context);
-                                        Navigator.pushNamed(context, RouteName.postverify);
-                                      }, () => {Navigator.pop(context)});
-                                    } catch (e) {
-                                      print('Error: $e');
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      color: AppColor.primaryColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Approve',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: AppColor.whiteColor),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -442,7 +356,7 @@ class _PostVerificationState extends State<PostVerification> {
     final viewModel = Provider.of<PostVerificationViewModel>(context);
     print(size);
     return MyScaffold(
-      route: RouteName.postverify,
+      route: RouteName.verifedpost,
       body: showLoad
           ? Align(
               alignment: Alignment.centerRight,

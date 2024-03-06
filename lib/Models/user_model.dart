@@ -1,33 +1,59 @@
+import 'package:intl/intl.dart';
+
 class User {
-  final int userId;
-  // final String image;
-  final String category;
-  final String username;
-  final String date;
-  final String amount;
-  final String paymentMethod;
-  final String status;
+  final int id;
+  final String name;
+  final String email;
+  final String role;
 
   User({
-    required this.userId,
-    // required this.image,
-    required this.category,
-    required this.username,
-    required this.date,
-    required this.amount,
-    required this.paymentMethod,
-    required this.status,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.role,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        userId: json['id'],
-        // image: json['image'],
-        username: json['username'],
-        category: json['category'],
-        date: json['date'],
-        amount: json['amount'],
-        paymentMethod: json['payment'],
-        status: json['status']);
+      email: json['email'],
+      role: json['roles'],
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}
+
+class AppUser {
+  final int userId;
+  final String username;
+  final String phoneNumber;
+  final String email;
+  final String address;
+  final String role;
+  final String status;
+  final String date;
+  final String image;
+
+  AppUser(
+      {required this.userId,
+      required this.username,
+      required this.email,
+      required this.date,
+      required this.phoneNumber,
+      required this.address,
+      required this.status,
+      required this.role,
+      required this.image});
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(
+        userId: json['id']??0,
+        username: json['name']??'',
+        email: json['email']??'',
+        role: json['roles'],
+        date: DateFormat('yyyy-MM-dd').format(DateTime.parse(json['createdAt'])).toString(),
+        status: json['activity'],
+        phoneNumber: json['phoneNumber']??'',
+        address: json['address']??'',
+        image: json['profilePictureUrl']??'');
   }
 }

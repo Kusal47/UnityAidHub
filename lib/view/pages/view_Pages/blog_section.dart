@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unity_admin/core/routes/routes_name.dart';
+import 'package:unity_admin/utils/toast_utils.dart';
 import 'package:unity_admin/view_model/blog_section_view_model.dart';
 import 'package:unity_admin/widgets/title_richText_page.dart';
+import '../../../Models/category_model.dart';
 import '../../../core/theme/app_color.dart';
 import '../../../data/lists.dart';
 import '../../../resources/custom_dropdown.dart';
 import '../../../resources/texfields_pages.dart';
+import '../../../utils/dialog_box.dart';
 import '../../../utils/text_design.dart';
+import '../../../view_model/category_view_model.dart';
 import '../../../widgets/document_upload.dart';
 import '../../../widgets/navigating_buttons.dart';
 import '../AdminScaffold/admin_scaffold_page.dart';
@@ -46,11 +50,9 @@ class _BlogSectionState extends State<BlogSection> {
                       return CommonBuildPages(
                         formKey: viewModel.formKeys[0],
                         nextPage: () {
-                          viewModel.titleAndDesc(
-                              context, viewModel.formKeys[0]);
+                          viewModel.titleAndDesc(context, viewModel.formKeys[0]);
                         },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
+                        previousPage: () => viewModel.pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         ),
@@ -70,8 +72,7 @@ class _BlogSectionState extends State<BlogSection> {
                         nextPage: () {
                           viewModel.documentUpload(context);
                         },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
+                        previousPage: () => viewModel.pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         ),
@@ -83,19 +84,39 @@ class _BlogSectionState extends State<BlogSection> {
                         viewModel,
                         formKey: viewModel.formKeys[1],
                         submitDetails: () {
-                          viewModel.submitPost(context, viewModel.formKeys[1]);
+                          if (viewModel.formKeys[1].currentState!.validate() &&
+                              viewModel.selectedCategory != null) {
+                            showDialogBox(
+                              context,
+                              'Submit information',
+                              'Are you sure to submit information ',
+                              () async {
+                                await viewModel.submitPost(context);
+                                viewModel.reset();
+                              },
+                              () {
+                                Navigator.pop(context);
+                              },
+                            );
+                          } else {
+                            ToastUtils().showCherryToast(
+                              context,
+                              'Some fields are empty',
+                              true,
+                            );
+                            print('Error Found');
+                          }
                         },
-                        previousPage: () =>
-                            viewModel.pageController.previousPage(
+                        previousPage: () => viewModel.pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         ),
                       );
                     default:
-                      return Container(); 
+                      return Container();
                   }
                 },
-                itemCount: 3, 
+                itemCount: 3,
               ),
             ),
           ),
@@ -113,107 +134,99 @@ class _BlogSectionState extends State<BlogSection> {
   }) {
     Size size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 8),
-              child: TextDesign(
-                text: 'Author Details',
-                fontweight: FontWeight.w700,
-                fontsize: 18,
-                color: AppColor.darkColor,
-              ),
+    return Consumer<CategoryViewModel>(builder: (context, categoryViewModel, _) {
+      List<CategoryData> categoryList = categoryViewModel.fetchedCategories;
+
+        return SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 8),
+                  child: TextDesign(
+                    text: 'Author Details',
+                    fontweight: FontWeight.w700,
+                    fontsize: 18,
+                    color: AppColor.darkColor,
+                  ),
+                ),
+                Divider(
+                  color: AppColor.primaryColor,
+                  thickness: 2,
+                  indent: size.width * 0.01,
+                  endIndent: size.width * 0.01,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                     
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: CustomFields(
+                          title:'Author Name',
+                          controller: viewModel.authorcontroller,
+                          labeltext: 'Author Name',
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                        child: TextDesign(
+                          text: 'Include author name',
+                          // fontStyle: FontStyle.italic,
+                          fontsize: 12,
+                          color: AppColor.textColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextDesign(
+                          text: 'Select a category',
+                          fontweight: FontWeight.w700,
+                          fontsize: 18,
+                          color: AppColor.darkColor,
+                        ),
+                      ),
+                     Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: CustomDropdown(
+                              value: viewModel.selectedCategory,
+                              onChanged: (CategoryData? value) {
+                                viewModel.selectedCategory = value!;
+                              },
+                              items: categoryList,
+                              hintText: 'Select Category',
+                              category:true,
+                            )),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                        child: TextDesign(
+                          text: 'Choose a suitable Category for your Blog',
+                          fontsize: 12,
+                          color: AppColor.textColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                buildNavigationButtons(context,
+                    nextPage: submitDetails, previousPage: previousPage, isIndexLast: true),
+              ],
             ),
-            Divider(
-              color: AppColor.primaryColor,
-              thickness: 2,
-              indent: size.width * 0.01,
-              endIndent: size.width * 0.01,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextDesign(
-                      text: 'Author Name',
-                      fontweight: FontWeight.w700,
-                      fontsize: 18,
-                      color: AppColor.darkColor,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CustomFields(
-                      controller: viewModel.authorcontroller,
-                      labeltext: 'Author Name',
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                    child: TextDesign(
-                      text: 'Include author name',
-                      // fontStyle: FontStyle.italic,
-                      fontsize: 12,
-                      color: AppColor.textColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextDesign(
-                      text: 'Select a category',
-                      fontweight: FontWeight.w700,
-                      fontsize: 18,
-                      color: AppColor.darkColor,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CustomDropdown(
-                      hintText: 'Select Category',
-                      onChanged: (value) {
-                        setState(() {
-                          viewModel.selectedCategory = value!;
-                          print(viewModel.selectedCategory);
-                        });
-                      },
-                      data: categoryList,
-                      fontSize: 12,
-                      values: viewModel.selectedCategory,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                    child: TextDesign(
-                      text: 'Choose a suitable Category for your Blog',
-                      fontsize: 12,
-                      color: AppColor.textColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            buildNavigationButtons(context,
-                nextPage: submitDetails,
-                previousPage: previousPage,
-                isIndexLast: true),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 }

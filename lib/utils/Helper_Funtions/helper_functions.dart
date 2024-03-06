@@ -24,6 +24,24 @@ class HelperFunctions{
   bool hasValidLength(String password) {
     return password.length >= 8 && password.length <= 15;
   }
+  
+String slugify(String title) {
+  return title.toLowerCase().replaceAll(' ', '-').replaceAll(RegExp(r'[^a-z0-9-]'), '%');
+}
 
+double amount(String fund) {
+  String amountString = fund.replaceAll('Rs.', '');
+  double? amount = double.tryParse(amountString);
+  if (amount == null) {
+    print('Invalid amount format');
+    return 0.0; // or handle the error accordingly
+  }
+  return amount;
+}
+bool isImageFile(String fileName) {
+  final imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+  final extension = fileName.split('.').last.toLowerCase();
+  return imageExtensions.contains('.$extension');
+}
 
 }

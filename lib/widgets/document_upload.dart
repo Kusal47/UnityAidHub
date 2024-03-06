@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../core/theme/app_color.dart';
-import '../utils/button_fields.dart';
+import '../utils/Helper_Funtions/helper_functions.dart';
 import '../utils/text_design.dart';
 import 'navigating_buttons.dart';
 
@@ -31,8 +31,8 @@ class DocumentUploads extends StatefulWidget {
 }
 
 class _DocumentUploadsState extends State<DocumentUploads> {
-   bool hovered = false;
-   int? hoveredIndex;
+  bool hovered = false;
+  int? hoveredIndex;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -75,8 +75,7 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                     child: TextDesign(
-                      text:
-                          'Upload imperative ${widget.title}  of your ${widget.titleType} ',
+                      text: 'Upload imperative ${widget.title}  of your ${widget.titleType} ',
                       fontsize: 12,
                       color: AppColor.textColor,
                     ),
@@ -87,9 +86,7 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                            width: size.width <= 500
-                                ? size.width * 0.3
-                                : size.width * 0.1,
+                            width: size.width * 0.15,
                             child: MouseRegion(
                               cursor: MaterialStateMouseCursor.clickable,
                               child: GestureDetector(
@@ -99,10 +96,8 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       shape: BoxShape.rectangle,
-                                      color: AppColor.lightgreyColor
-                                      ),
-                                  child:
-                                      const Center(child: Text('Choose Files')),
+                                      color: AppColor.lightgreyColor),
+                                  child: const TextDesign(text:'Choose Files'),
                                 ),
                               ),
                             )),
@@ -110,14 +105,13 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                           padding: const EdgeInsets.all(3.0),
                           child: Container(
                             // color:AppColor.primaryColor,
-                            width: size.width <= 500
-                                ? size.width * 0.512
-                                : size.width * 0.197,
+                            width: size.width <= 500 ? size.width * 0.512 : size.width * 0.197,
                             child: TextDesign(
                               text: widget.fileNamesList.isEmpty
                                   ? 'No files chosen'
                                   : widget.fileNamesList.join(','),
                               fontStyle: FontStyle.italic,
+                              textAlign: TextAlign.start,
                             ),
                           ),
                         ),
@@ -147,39 +141,37 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                                             hoveredIndex = index;
                                           });
                                         },
-                                        child: Image.memory(
-                                          widget.fileBytesList[index],
-                                          width: size.height * 0.25,
-                                          height: size.width <= 500
-                                              ? size.height * 0.15
-                                              : size.height * 0.25,
-                                          fit: BoxFit.contain,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              border:
+                                                  Border.all(width: 2, color: AppColor.borderColor),
+                                              borderRadius: BorderRadius.circular(5)),
+                                          child: HelperFunctions()
+                                                  .isImageFile(widget.fileNamesList[index])
+                                              ? Image.memory(
+                                                  widget.fileBytesList[index],
+                                                  width: size.height * 0.25,
+                                                  height: size.width <= 500
+                                                      ? size.height * 0.15
+                                                      : size.height * 0.25,
+                                                  fit: BoxFit.contain,
+                                                )
+                                              : const Icon(Icons.insert_drive_file, size: 48),
                                         ),
                                       ),
                                       AnimatedSwitcher(
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        reverseDuration:
-                                            const Duration(milliseconds: 100),
-                                        child: hovered &&
-                                                hoveredIndex ==
-                                                    index
+                                        duration: const Duration(milliseconds: 500),
+                                        reverseDuration: const Duration(milliseconds: 100),
+                                        child: hovered && hoveredIndex == index
                                             ? ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        AppColor.redColor),
+                                                    backgroundColor: AppColor.redColor),
                                                 onPressed: () {
-                                                  widget.fileBytesList
-                                                      .removeAt(
-                                                          hoveredIndex!);
-                                                  widget.fileNamesList
-                                                      .removeAt(
-                                                          hoveredIndex!);
-                                                  hoveredIndex =
-                                                      null;
+                                                  widget.fileBytesList.removeAt(hoveredIndex!);
+                                                  widget.fileNamesList.removeAt(hoveredIndex!);
+                                                  hoveredIndex = null;
                                                   setState(() {
-                                                    hovered =
-                                                        false;
+                                                    hovered = false;
                                                   });
                                                 },
                                                 child: TextDesign(
@@ -192,8 +184,7 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                                   );
                                 },
                                 physics: const AlwaysScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   mainAxisSpacing: 5,
                                   crossAxisSpacing: 5,
@@ -202,8 +193,7 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, top: 8.0),
+                              padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                               child: TextDesign(
                                 text:
                                     '*Note: You can remove unnecessary ${widget.title}  by clicking respective ${widget.title} ',
@@ -215,22 +205,22 @@ class _DocumentUploadsState extends State<DocumentUploads> {
                           ],
                         )
                       : Container(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.2,
-                          child: ButtonFields(
-                            onTap: () {},
-                            txtColor: AppColor.whiteColor,
-                            text: 'Upload',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       SizedBox(
+                  //         width: size.width * 0.2,
+                  //         child: ButtonFields(
+                  //           onTap: () {},
+                  //           txtColor: AppColor.whiteColor,
+                  //           text: 'Upload',
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ))),
@@ -240,7 +230,7 @@ class _DocumentUploadsState extends State<DocumentUploads> {
           previousPage: widget.previousPage,
           isIndexLast: widget.isPage ? true : false,
         ),
-       ]),
+      ]),
     );
   }
 }
