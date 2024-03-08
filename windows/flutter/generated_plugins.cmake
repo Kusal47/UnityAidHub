@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
   firebase_core
+  flutter_secure_storage_windows
   irondash_engine_context
   screen_retriever
   super_native_extensions

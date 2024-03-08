@@ -6,9 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:unity_admin/core/theme/app_color.dart';
-import 'package:unity_admin/utils/Helper_Funtions/helper_functions.dart';
 import '../Models/category_model.dart';
 import '../Models/user_model.dart';
 import '../authServices/auth_service.dart';
@@ -17,6 +15,7 @@ import '../core/routes/routes_name.dart';
 import '../utils/Helper_Funtions/formdata_to_json.dart';
 import '../utils/cloudinary.dart';
 import '../utils/custom_notification_bar.dart';
+import '../utils/dialogs.dart';
 import '../utils/toast_utils.dart';
 
 class AddPostViewModel extends ChangeNotifier {
@@ -29,6 +28,7 @@ class AddPostViewModel extends ChangeNotifier {
   bool isNotChecked = false;
   String selectedBenificiary = '';
   String selectedCountry = '';
+  bool isLoading = false;
 
   var selectedColor = AppColor.borderColor;
   CategoryData? selectedCategory;
@@ -72,6 +72,8 @@ class AddPostViewModel extends ChangeNotifier {
   }
 
   Future<void> submitPost(BuildContext context, int categoryId) async {
+    (isLoading) ? showLoadingDialog(context) : const SizedBox();
+    notifyListeners();
     try {
       String? userId = await AuthService.getUserId();
       if (isChecked == true) {
@@ -94,11 +96,9 @@ class AddPostViewModel extends ChangeNotifier {
           "postType": postType,
           "categoryId": categoryId,
           "userId": userId,
-          
           "image": imageUrls,
           "documents": documentUrls,
         });
-        
 
         Map<String, dynamic> jsonData = TextAndImageConversion().formDataToJson(postData);
         String jsonString = jsonEncode(jsonData);
@@ -117,14 +117,21 @@ class AddPostViewModel extends ChangeNotifier {
           print('Data uploaded successfully');
           print('Response: ${response.data}');
           CostumNotificationBar.toastMessage("Post added Successfully");
+          isLoading = false;
+          notifyListeners();
           Navigator.pushNamed(context, RouteName.dashboard);
         } else {
           print('Failed to upload data. Status code: ${response.statusCode}');
           CostumNotificationBar.toastMessage("Post adding Unsucccessfull");
+          isLoading = false;
+          notifyListeners();
           Navigator.pushNamed(context, RouteName.postadd);
         }
       }
     } catch (e) {
+      ToastUtils().showCherryToast(context, 'Unable to Add Post', true);
+      isLoading = false;
+      notifyListeners();
       print('Error occurred during data upload: $e');
     }
   }
